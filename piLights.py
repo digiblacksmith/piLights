@@ -10,6 +10,7 @@ from piLightsColor import *
 from piLightsGenerators import *
 from piLightsChannels import *
 from piLightsPrograms import *
+from piLightsWebsite import *
 import time
 
 ## PILIGHTS @@
@@ -20,7 +21,7 @@ class piLights:
 		
 		## LED @@
 		self.brightness = 0.8
-		self.delay = 0.05
+		self.refresh = 0.05
 		self.led_count = 28 * 1
 		self.led_strip = led
 		
@@ -58,6 +59,9 @@ class piLights:
 	def run(self):
 		print 'Running...'
 		while True:
+			## Set Brightness
+			self.led_strip.brightness = self.brightness
+			
 			## Generat new color @@
 			if self.generator == 0:
 				self.color = self.gen_Constant[0].step()
@@ -83,20 +87,15 @@ class piLights:
 
 			## Update @@
 			self.led_strip.update(ret=False)
-			time.sleep(self.delay)
+			time.sleep(self.refresh)
 
 ## MAIN @@
 
 if __name__ == "__main__":
 	count = 28 * 1
-	
-	c = Colors.blue
-	
 	LEDs = LEDstrip(count, console=True)
 	pL = piLights(LEDs)
-	
-	#print 'Starting webserver...',
-	#web = Start_Webserver(console=True)
+	Start_Webserver(pL, console=True)
 	
 	try:
 		pL.run()
@@ -104,6 +103,7 @@ if __name__ == "__main__":
 		print '\033[0m'
 
 	LEDs.turnAllOff()
+	#Stop_Webserver()
 	print 'Finished...'
 
 ## EOF @@

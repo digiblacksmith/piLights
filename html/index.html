@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="viewport" content="user-scalable=no">
+	<title>piLights</title>
+	<link rel="stylesheet" href="piLights.css"/>
+	<script type="text/javascript" language="javascript" src="piLights.js"></script>
+</head>
+<body onload="init()">
+<div class="fullscreen">
+
+
+<div class="displays" id="displays">
+	<div id="displayMaster">
+		<ui class="box" style="width: 50px; height: 200px;">
+	
+		<ui class="slider"><ui class="sliderBar" onMouseDown="sliderHandleMouseDown(event,this)"></ui></ui>
+		
+		
+		<script type="text/javascript">
+
+function GET_brightness() {
+	data = httpGet('brightness');
+	gDebug.innerHTML += 'brightness = ' + data + '<br>';
+}
+function GET_refresh() {
+	data = httpGet('refresh');
+	gDebug.innerHTML += 'refresh = ' + data + '<br>';
+}
+		</script>
+		
+		<P>
+			<button onclick="GET_brightness()">brightness</button>
+			<button onclick="GET_refresh()">refresh</button>
+		</P>
+		
+		</ui>
+	</div>
+	<div id="displayColors">colors
+	</div>
+	<div id="displayPatterns">patterns
+	</div>
+	<div id="displayAbout">about
+	</div>
+</div>
+
+
+<ul class="controlsList">
+	<li id="controlMaster"	 onClick="moveDisplay(0*512)">master</li>
+	<li id="controlColors"	 onClick="moveDisplay(1*512)">colors</li>
+	<li id="controlPatterns" onClick="moveDisplay(2*512)">patterns</li>
+	<li id="controlAbout"    onClick="moveDisplay(3*512)">about</li>
+</ul>
+
+
+</div>
+<div class="debug" id="debug"/>
+</body>
+</html>
