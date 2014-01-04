@@ -20,7 +20,7 @@ class piLights:
 		
 		## LED @@
 		self.brightness = 0.8
-		self.delay = 0.01
+		self.delay = 0.05
 		self.led_count = 28 * 1
 		self.led_strip = led
 		
@@ -35,32 +35,29 @@ class piLights:
 		## COLOR @@
 		self.color = self.palette[0]
 		
-	##	TODO: VARS
-		## GENERATORS @@		Generators
-		self.gen_Constant	= [ Generator_Constant(self.color) ]
-		self.gen_Random		= [ Generator_Random() ]
-		self.gen_Rainbow	= [ Generator_Rainbow(self.color),		0.01 ]
-		self.gen_Disolve	= [ Generator_PaletteDisolve(),			10 ]
-		self.generator = 3
+		## GENERATORS @@		Generators							vars
+		self.gen_Constant	= [ Generator_Constant(self.color)				]
+		self.gen_Random		= [ Generator_Random()							]
+		self.gen_Rainbow	= [ Generator_Rainbow(self.color),		0.01	]
+		self.gen_Disolve	= [ Generator_PaletteDisolve(),			10		]
+		self.generator = 2
 
 		## CHANELS @@			On/Off	Channels			 r,g,b,a	vars
-		self.chan_Blink		= [ False,	Channel_Blink(),	[1,1,1,0],	[10]]
-		self.chan_Sin		= [ False,	Channel_Sin(),		[1,1,1,0],	[0.1]]
-		self.chan_Random	= [ False,	Channel_Random(),	[1,1,1,0], 	[]]
-		#self.chan_Freeze	= [ False,	Channel_Freeze(),	[1,1,1,0],	[-1]]
-		#self.chan_Fadeout	= [ False,	Channel_Fadeout(),	[1,1,1,0],	[20]]
+		self.chan_Blink		= [ False,	Channel_Blink(),	[1,1,1,0],	10		]
+		self.chan_Sin		= [ False,	Channel_Sin(),		[1,1,1,0],	0.1		]
+		self.chan_Random	= [ False,	Channel_Random(),	[1,1,1,0]			]
+		self.chan_Freeze	= [ False,	Channel_Freeze(),	[1,1,1,0],	False	]
+		self.chan_Fadeout	= [ False,	Channel_Fadeout(),	[1,1,1,0],	20		]
 
-		## PROGRAMS @@
-		self.prog_All		= [ True,	Program_All(self.led_strip, self.color),		[]]
-		self.prog_ShiftLR	= [ False,	Program_ShiftLR(self.led_strip, self.color),	[10]]
+		## PROGRAMS @@			On/Off	Programs										vars
+		self.prog_All		= [ True,	Program_All(self.led_strip, self.color)				]
+		self.prog_ShiftLR	= [ False,	Program_ShiftLR(self.led_strip, self.color),	1	]
 
 		print "Loaded!"
 
 	def run(self):
 		print 'Running...'
 		while True:
-		
-		##	TODO: VARS
 			## Generat new color @@
 			if self.generator == 0:
 				self.color = self.gen_Constant[0].step()
@@ -72,9 +69,12 @@ class piLights:
 				self.color = self.gen_Disolve[0].step(self.palette, period=self.gen_Disolve[1])
 
 			## Channels @@
-			if self.chan_Blink[0]:	self.color = self.chan_Blink[1].tick	(self.color, self.chan_Blink[2], self.chan_Blink[3])
-			if self.chan_Sin[0]:	self.color = self.chan_Sin[1].tick		(self.color, self.chan_Sin[2], self.chan_Sin[3])
+			if self.chan_Blink[0]:	self.color = self.chan_Blink[1].tick	(self.color, self.chan_Blink[2], duration=self.chan_Blink[3])
+			if self.chan_Sin[0]:	self.color = self.chan_Sin[1].tick		(self.color, self.chan_Sin[2], delta=self.chan_Sin[3])
 			if self.chan_Random[0]:	self.color = self.chan_Random[1].tick	(self.color, self.chan_Random[2])
+			if self.chan_Freeze[0]:	self.color = self.chan_Freeze[1].tick	(self.color, self.chan_Freeze[2], newColor=0)
+			if self.chan_Fadeout[0]:self.color = self.chan_Fadeout[1].tick	(self.color, self.chan_Fadeout[2], duration=20)
+			
 
 			## Prorams @@
 			if self.prog_All[0] == True:		self.prog_All[1].run(self.color)
@@ -82,7 +82,7 @@ class piLights:
 			#if self.prog_DotDance[0] == True:	self.prog_DotDance.run(self.color)
 
 			## Update @@
-			self.led_strip.update(ret=True)
+			self.led_strip.update(ret=False)
 			time.sleep(self.delay)
 
 ## MAIN @@
