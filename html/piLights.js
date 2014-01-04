@@ -8,13 +8,17 @@ function init() {
 	//gDebug.innerHTML += 'gBrightness = ' + gBrightness + '<br>';
 }
 
-
 function httpGet(url) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", '/'+url, false);
     xmlHttp.send(null);
 	console.log(xmlHttp.responseText);
     return xmlHttp.responseText;
+}
+
+function moveDisplay(x) {
+	var d = document.getElementById("displays");
+	d.style.left = -x+'px';
 }
 
 /*function httpGet(url) {

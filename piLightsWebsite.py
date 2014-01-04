@@ -39,9 +39,9 @@ class brightness:
 		global gPiLights
 		level = float(web.input(level=-1.0).level)
 		if level >= 0.0:
-			gPiLights.brightness = level
-		print 'LEVEL=', level, gPiLights.brightness
-		return gPiLights.brightness
+			gPiLights.brightness = level/100.0
+		print 'LEVEL=', level, int(gPiLights.brightness * 100)
+		return int(gPiLights.brightness * 100)
 
 class refresh:
 	def GET(self):

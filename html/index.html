@@ -15,29 +15,48 @@
 
 <div class="displays" id="displays">
 	<div id="displayMaster">
-		<ui class="box" style="width: 50px; height: 200px;">
-	
-		<ui class="slider"><ui class="sliderBar" onMouseDown="sliderHandleMouseDown(event,this)"></ui></ui>
+		<!--<ui class="box" style="width: 150px; height: 200px;">
+		<ui class="slider"><ui class="sliderBar" onMouseDown="sliderHandleMouseDown(event,this)"></ui></ui>-->
 		
-		
+		<!-- Brightness -->
+		<ui class="box" style="width: 150px; height: 200px;">
+		<span id="brightness"></span><br>
+		<button id="brightness100" onclick="SET_brightness(100)">100%</button><br>
+		<button id="brightness80" onclick="SET_brightness(80)">80%</button><br>
+		<button id="brightness60" onclick="SET_brightness(60)">60%</button><br>
+		<button id="brightness60" onclick="SET_brightness(50)">50%</button><br>
+		<button id="brightness40" onclick="SET_brightness(40)">40%</button><br>
+		<button id="brightness20" onclick="SET_brightness(20)">20%</button><br>
+		<button id="brightness0" onclick="SET_brightness(0)">0%</button>
 		<script type="text/javascript">
-
-function GET_brightness() {
-	data = httpGet('brightness');
-	gDebug.innerHTML += 'brightness = ' + data + '<br>';
-}
-function GET_refresh() {
-	data = httpGet('refresh');
-	gDebug.innerHTML += 'refresh = ' + data + '<br>';
-}
+			document.getElementById('brightness').innerHTML = httpGet('brightness');;
+			function SET_brightness(level) {
+				data = httpGet('brightness?level='+level);
+				document.getElementById('brightness').innerHTML = data;
+			}
 		</script>
-		
-		<P>
-			<button onclick="GET_brightness()">brightness</button>
-			<button onclick="GET_refresh()">refresh</button>
-		</P>
-		
 		</ui>
+		
+		<!-- Refresh -->
+		<ui class="box" style="width: 150px; height: 200px;">
+		<span id="refresh"></span><br>
+		<button id="refresh0.001" onclick="SET_refresh(0.001)">0.001</button><br>
+		<button id="refresh0.005" onclick="SET_refresh(0.005)">0.05</button><br>
+		<button id="refresh0.01" onclick="SET_refresh(0.01)">0.01</button><br>
+		<button id="refresh0.05" onclick="SET_refresh(0.05)">0.05</button><br>
+		<button id="refresh0.1" onclick="SET_refresh(0.1)">0.1</button><br>
+		<button id="refresh0.2" onclick="SET_refresh(0.2)">0.2</button><br>
+		<button id="refresh0.5" onclick="SET_refresh(0.5)">0.5</button><br>
+		<button id="refresh1.0" onclick="SET_refresh(1.0)">1.0</button>
+		<script type="text/javascript">
+			document.getElementById('refresh').innerHTML = httpGet('refresh');;
+			function SET_refresh(level) {
+				data = httpGet('refresh?rate='+level);
+				document.getElementById('refresh').innerHTML = data;
+			}
+		</script>
+		</ui>
+
 	</div>
 	<div id="displayColors">colors
 	</div>
