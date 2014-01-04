@@ -10,11 +10,11 @@ class _Generators(object):
 
 class Generator_Constant(_Generators):
 	def __init__(self, color):
-		self.color = copy.copy(color)
+		self.frozen = copy.copy(color)
 	def step(self, color=0):
 		if type(color) is types.InstanceType:
-			self.color = copy.copy(color)
-		return copy.copy(self.color)
+			self.frozen = copy.copy(color)
+		return copy.copy(self.frozen)
 
 
 class Generator_Random(_Generators):

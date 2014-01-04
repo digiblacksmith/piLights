@@ -12,14 +12,14 @@
 <body onload="init()">
 <div class="fullscreen">
 
-
+<!-- Top display -->
 <div class="displays" id="displays">
 	<div id="displayMaster">
 		<!--<ui class="box" style="width: 150px; height: 200px;">
 		<ui class="slider"><ui class="sliderBar" onMouseDown="sliderHandleMouseDown(event,this)"></ui></ui>-->
 		
 		<!-- Brightness -->
-		<ui class="box" style="width: 150px; height: 200px;">
+		<ui class="box" style="width: 100px; height: 200px;">
 		<span id="brightness"></span><br>
 		<button id="brightness100" onclick="SET_brightness(100)">100%</button><br>
 		<button id="brightness80" onclick="SET_brightness(80)">80%</button><br>
@@ -38,7 +38,7 @@
 		</ui>
 		
 		<!-- Refresh -->
-		<ui class="box" style="width: 150px; height: 200px;">
+		<ui class="box" style="width: 100px; height: 200px;">
 		<span id="refresh"></span><br>
 		<button id="refresh0.001" onclick="SET_refresh(0.001)">0.001</button><br>
 		<button id="refresh0.005" onclick="SET_refresh(0.005)">0.05</button><br>
@@ -50,30 +50,46 @@
 		<button id="refresh1.0" onclick="SET_refresh(1.0)">1.0</button>
 		<script type="text/javascript">
 			document.getElementById('refresh').innerHTML = httpGet('refresh');;
-			function SET_refresh(level) {
-				data = httpGet('refresh?rate='+level);
+			function SET_refresh(rate) {
+				data = httpGet('refresh?rate='+rate);
 				document.getElementById('refresh').innerHTML = data;
 			}
 		</script>
 		</ui>
 
 	</div>
-	<div id="displayColors">colors
+	<div id="displayGenerators">
+	
+		<!-- Generators -->
+		<ui class="box" style="width: 100px; height: 200px;">
+		<span id="generator"></span><br>
+		<button id="generator0" onclick="SET_generator(0)">Constant</button><br>
+		<button id="generator1" onclick="SET_generator(1)">Random</button><br>
+		<button id="generator2" onclick="SET_generator(2)">Rainbow</button><br>
+		<button id="generator3" onclick="SET_generator(3)">Disolve</button><br>
+		<script type="text/javascript">
+			document.getElementById('generator').innerHTML = httpGet('generator');;
+			function SET_generator(num) {
+				data = httpGet('generator?num='+num);
+				document.getElementById('generator').innerHTML = data;
+			}
+		</script>
+		</ui>
+	
 	</div>
-	<div id="displayPatterns">patterns
+	<div id="displayChannels">Channels
 	</div>
-	<div id="displayAbout">about
+	<div id="displayPrograms">Programs
 	</div>
 </div>
 
-
+<!-- Buttons -->
 <ul class="controlsList">
-	<li id="controlMaster"	 onClick="moveDisplay(0*512)">master</li>
-	<li id="controlColors"	 onClick="moveDisplay(1*512)">colors</li>
-	<li id="controlPatterns" onClick="moveDisplay(2*512)">patterns</li>
-	<li id="controlAbout"    onClick="moveDisplay(3*512)">about</li>
+	<li id="controlMaster"	 	onClick="moveDisplay(0*512)">master</li>
+	<li id="controlGenerators"	onClick="moveDisplay(1*512)">generators</li>
+	<li id="controlChannels" 	onClick="moveDisplay(2*512)">channels</li>
+	<li id="controlPrograms"    onClick="moveDisplay(3*512)">programs</li>
 </ul>
-
 
 </div>
 <div class="debug" id="debug"/>

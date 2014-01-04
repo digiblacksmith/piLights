@@ -56,6 +56,11 @@ class piLights:
 
 		print "Loaded!"
 
+	def setGenerator(self, num):
+		self.generator = num
+		if num == 0:
+			c = self.gen_Constant[0].step(color=self.color)
+
 	def run(self):
 		print 'Running...'
 		while True:

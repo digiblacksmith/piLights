@@ -36,13 +36,13 @@ div.displays div {
 div.displays div#displayMaster {
 	background-color: white;
 }
-div.displays div#displayColors {
+div.displays div#displayGenerators {
 	background-color: red;
 }
-div.displays div#displayPatterns {
+div.displays div#displayChannels {
 	background-color: green;
 }
-div.displays div#displayAbout {
+div.displays div#displayPrograms {
 	background-color: blue;
 }
 
@@ -79,15 +79,15 @@ ul.controlsList li#controlMaster {
 	background-color: white;
 	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#444), color-stop(100%,#EEE));
 }
-ul.controlsList li#controlColors {
+ul.controlsList li#controlGenerators {
 	background-color: red;
 	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#600), color-stop(100%,#F00));
 }
-ul.controlsList li#controlPatterns {
+ul.controlsList li#controlChannels {
 	background-color: green;
 	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#040), color-stop(100%,#0D0));
 }
-ul.controlsList li#controlAbout {
+ul.controlsList li#controlPrograms {
 	background-color: blue;
 	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#006), color-stop(100%,#00F));
 }

@@ -16,6 +16,8 @@ gURLs = (
 	'/brightness',		'brightness',
 	'/refresh',			'refresh',
 	
+	## Generators
+	'/generator',		'generator',
 	
 )
 
@@ -52,6 +54,14 @@ class refresh:
 		print 'RATE=', rate, gPiLights.refresh
 		return gPiLights.refresh
 
+## Generators
+class generator:
+	def GET(self):
+		global gPiLights
+		num = int(web.input(num=-1).num)
+		if num >= 0:
+			gPiLights.setGenerator(num)
+		return gPiLights.generator
 
 
 ## WEBSITE MAIN @@
