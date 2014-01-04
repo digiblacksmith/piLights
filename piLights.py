@@ -5,145 +5,105 @@
 # http://tightdev.net/SpiDev_Doc.pdf
 # http://learn.adafruit.com/light-painting-with-raspberry-pi/software
 
-
-
-
-def main():
-	print "\033[0m!\033[0;31mp\033[0;33mi\033[0;32mL\033[0;33mi\033[0;34mg\033[0;35mh\033[0;36mt\033[0;37ms\033[0;31m!\033[0m"
-	print 'Starting webserver...',
-
-
-
-
-
-
-
-
-
-
-"""
-from piLightsColor import *
 from piLightsLEDstrip import *
-from piLightsAnimations import *
-from piLightsColorGenerators import *
-from piLightsWebserver import *
-#import os, sys, time
+from piLightsColor import *
+from piLightsGenerators import *
+from piLightsChannels import *
+from piLightsPrograms import *
+import time
 
-##
+## PILIGHTS @@
 
 class piLights:
-	def __init__(self):
-		self.palete = [Colors.orange]
-		self.generator = None
+	def __init__(self, led):
+		print "## \033[0m!\033[0;31mp\033[0;33mi\033[0;32mL\033[0;33mi\033[0;34mg\033[0;35mh\033[0;36mt\033[0;37ms\033[0;31m!\033[0m @@"
 		
-	def paletteSet(self, palette):
-		self.palette = palette
-	def paletteAppend(self, color):
-		self.palette.append(color)
-
-	def setGenerator(self, id):
-		if id == 0:
-			self.generator = Gen_Solid(self.palette[0])
-		elif id == 1:
-			self.generator = Gen_Random()
-		elif id == 2:
-			self.generator = Gen_RainbowCycle(degree=0.0, delta=0.01)
-		elif id == 3:
-			self.generator = Gen_DissolveThrough(start=0)
-		else:
-			self.generator = Gen_Solid(Colors.orange)
-
-
-## MAIN ##
-
-def main():
-	print "\033[0m!\033[0;31mp\033[0;33mi\033[0;32mL\033[0;33mi\033[0;34mg\033[0;35mh\033[0;36mt\033[0;37ms\033[0;31m!\033[0m"
-	print 'Starting webserver...',
-	piLightsWebserver.Web_Server()
-
-	print 'Running...'
-
-	global gLED, gPiLights
-	
-	######################
-	##  COLOR PALETTE   ##
-	######################
-	
-	#palette = [Color(255,255,0), Color(0,0,255), Color(0,255,255), Color(255,0,0), Color(255,0,255), Color(0,255,0)]
-	#palette = [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue, Colors.indigo, Colors.violet]
-	palette = [Hex2Color('FF0000'), Hex2Color('00FF00'), Hex2Color('0000FF')]
-	gPiLights.paletteSet(palette)
-
-	#del gPalette[:]
-	#gPalette.append(Colors.blue)
-	
-	######################
-	## COLOR GENERATORS ##
-	######################
-
-	##	0	Gen_Solid(color)								step()
-	##  1	Gen_Random()									step()
-	##	2	Gen_RainbowCycle(color,degree=0.0,delta0.01)	step(degree,delta)
-	## 	3	Gen_DissolveThrough(start=0)					step(period=10)
-	
-	gPiLights.setGenerator(2)
-	
-	## Channel Animations
-	#chan_squish = Chan_squish()
-	#chan_half = Chan_half()
-	#chan_freeze = Chan_freeze(Color(255,0,0))
-	#chan_blink = Chan_blink(delay=3)
-	#chan_sin = Chan_sin(step=0.1)
-	#chan_rand = Chan_Random()
-	
-	prog_all = Prog_all()
-	#prog_cycle = Prog_cycleLinear()
-
-	while True:
+		## LED @@
+		self.brightness = 0.8
+		self.delay = 0.01
+		self.led_count = 28 * 1
+		self.led_strip = led
 		
-		color = gPiLights.generator.step()
-		#print str(color)
+		self.led_strip.brightness = self.brightness
+
+		## PALETTE @@
+		self.palette = [Color(255,255,0), Color(0,0,255), Color(0,255,255), Color(255,0,0), Color(255,0,255), Color(0,255,0)]
+		#self.palette = [Colors.red, Colors.orange, Colors.yellow, Colors.green, Colors.blue, Colors.indigo, Colors.violet]
+		#self.palette = [Hex2Color('FF0000'), Hex2Color('00FF00'), Hex2Color('0000FF')]
+		#self.palette = [Colors.red, Colors.blue]
 		
-		## Channel Patterns
-		if 'chan_half' in locals():
-			color = chan_half.tick(color, [1,1,1,0])
-		if 'chan_freeze' in locals():
-			color = chan_freeze.tick(color, [1,1,1,0])
-		if 'chan_blink' in locals():
-			color = chan_blink.tick(color, [1,0,0,0])
-		if 'chan_sin' in locals():
-			color = chan_sin.tick(color, [0,0,0,1])
-		if 'chan_rand' in locals():
-			color = chan_rand.tick(color, [0,0,0,1])
-			
-		## Apply just before Programs
-#		if 'chan_squish' in locals():
-#			color = chan_squish.tick(color)
-
-		## Programs
-		if 'prog_all' in locals():
-			prog_all.run(color)
-		elif 'prog_cycle' in locals():
-			prog_cycle.run(color, forward=True, fadeOut=0)
-		else:
-			gLED.fillAll(color)
+		## COLOR @@
+		self.color = self.palette[0]
 		
-		## Debug
-		#print color.r, color.g, color.b, colora
-		#printColor(color)
+	##	TODO: VARS
+		## GENERATORS @@		Generators
+		self.gen_Constant	= [ Generator_Constant(self.color) ]
+		self.gen_Random		= [ Generator_Random() ]
+		self.gen_Rainbow	= [ Generator_Rainbow(self.color),		0.01 ]
+		self.gen_Disolve	= [ Generator_PaletteDisolve(),			10 ]
+		self.generator = 3
 
-		time.sleep(0.1)
+		## CHANELS @@			On/Off	Channels			 r,g,b,a	vars
+		self.chan_Blink		= [ False,	Channel_Blink(),	[1,1,1,0],	[10]]
+		self.chan_Sin		= [ False,	Channel_Sin(),		[1,1,1,0],	[0.1]]
+		self.chan_Random	= [ False,	Channel_Random(),	[1,1,1,0], 	[]]
+		#self.chan_Freeze	= [ False,	Channel_Freeze(),	[1,1,1,0],	[-1]]
+		#self.chan_Fadeout	= [ False,	Channel_Fadeout(),	[1,1,1,0],	[20]]
 
-## MAIN
+		## PROGRAMS @@
+		self.prog_All		= [ True,	Program_All(self.led_strip, self.color),		[]]
+		self.prog_ShiftLR	= [ False,	Program_ShiftLR(self.led_strip, self.color),	[10]]
 
-while True:
+		print "Loaded!"
+
+	def run(self):
+		print 'Running...'
+		while True:
+		
+		##	TODO: VARS
+			## Generat new color @@
+			if self.generator == 0:
+				self.color = self.gen_Constant[0].step()
+			if self.generator == 1:
+				self.color = self.gen_Random[0].step() #(color=)
+			if self.generator == 2:
+				self.color = self.gen_Rainbow[0].step(delta=self.gen_Rainbow[1])
+			if self.generator == 3:
+				self.color = self.gen_Disolve[0].step(self.palette, period=self.gen_Disolve[1])
+
+			## Channels @@
+			if self.chan_Blink[0]:	self.color = self.chan_Blink[1].tick	(self.color, self.chan_Blink[2], self.chan_Blink[3])
+			if self.chan_Sin[0]:	self.color = self.chan_Sin[1].tick		(self.color, self.chan_Sin[2], self.chan_Sin[3])
+			if self.chan_Random[0]:	self.color = self.chan_Random[1].tick	(self.color, self.chan_Random[2])
+
+			## Prorams @@
+			if self.prog_All[0] == True:		self.prog_All[1].run(self.color)
+			if self.prog_ShiftLR[0] == True:	self.prog_ShiftLR[1].run(self.color, self.prog_ShiftLR[2])
+			#if self.prog_DotDance[0] == True:	self.prog_DotDance.run(self.color)
+
+			## Update @@
+			self.led_strip.update(ret=True)
+			time.sleep(self.delay)
+
+## MAIN @@
+
+if __name__ == "__main__":
+	count = 28 * 1
+	
+	c = Colors.blue
+	
+	LEDs = LEDstrip(count, console=True)
+	pL = piLights(LEDs)
+	
+	#print 'Starting webserver...',
+	#web = Start_Webserver(console=True)
+	
 	try:
-		main()
+		pL.run()
 	except (KeyboardInterrupt, SystemExit):
-		break
+		print '\033[0m'
 
-print ''
-#gLED.turnAllOff()
-print '\033[0mFinished...'
+	LEDs.turnAllOff()
+	print 'Finished...'
 
-"""
+## EOF @@
