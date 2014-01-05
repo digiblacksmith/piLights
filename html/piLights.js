@@ -17,11 +17,11 @@ function httpGET(url) {
 }
 
 function httpPOST(url, data) {
-	//console.log(url, data)
+	console.log(url, data)
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("POST", '/'+url, true);
     xmlHttp.onload = function () {
-    	console.log(this.responseText);
+    	//console.log(this.responseText);
 	};
 	xmlHttp.send(data);
 }

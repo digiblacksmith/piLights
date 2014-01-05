@@ -78,8 +78,6 @@ class piLights:
 				self.color = self.gen_Disolve[0].step(self.palette, period=self.gen_Disolve[1])
 
 			## Channels @@
-			#print self.chan_Blink[0], self.chan_Blink[2], self.chan_Blink[3]
-
 			if self.chan_Blink[0]:	self.color = self.chan_Blink[1].tick	(self.color, self.chan_Blink[2], duration=self.chan_Blink[3])
 			if self.chan_Sin[0]:	self.color = self.chan_Sin[1].tick		(self.color, self.chan_Sin[2], delta=self.chan_Sin[3])
 			if self.chan_Random[0]:	self.color = self.chan_Random[1].tick	(self.color, self.chan_Random[2])

@@ -22,8 +22,8 @@
 		<script type="text/javascript">
 			document.getElementById('brightness').innerHTML = httpGET('brightness');
 			function SET_brightness(level) {
-				data = httpGET('brightness?level='+level);
-				document.getElementById('brightness').innerHTML = data;
+				var ret = httpPOST('brightness?level='+level);
+				document.getElementById('brightness').innerHTML = level; //httpGET('brightness');
 			}
 		</script>
 		<button id="brightness100" onclick="SET_brightness(100)">100%</button><br>
@@ -41,8 +41,8 @@
 		<script type="text/javascript">
 			document.getElementById('refresh').innerHTML = httpGET('refresh');
 			function SET_refresh(rate) {
-				data = httpGET('refresh?rate='+rate);
-				document.getElementById('refresh').innerHTML = data;
+				var ret = httpPOST('refresh?rate='+rate);
+				document.getElementById('refresh').innerHTML = rate; //httpGET('refresh');
 			}
 		</script>
 		<button id="refresh0.001" onclick="SET_refresh(0.001)">0.001</button><br>
@@ -64,8 +64,8 @@
 		<script type="text/javascript">
 			document.getElementById('generator').innerHTML = httpGET('generator');
 			function SET_generator(num) {
-				data = httpGET('generator?num='+num);
-				document.getElementById('generator').innerHTML = data;
+				var ret = httpPOST('generator?num='+num);
+				document.getElementById('generator').innerHTML = num; //httpGET('generator');
 			}
 		</script>
 		<button onclick="SET_generator(0)">Constant</button><br>
@@ -90,7 +90,7 @@
 		<script type="text/javascript">
 			load_chan_blink();
 			function load_chan_blink() {
-				arr = httpGET('chan_blink').split(','); console.log(arr);
+				arr = httpGET('chan_blink').split(','); //console.log(arr);
 				// on/off
 				document.getElementById("chan_blink_on").checked = (arr[0] == 'True');
 				//r,g,b,a

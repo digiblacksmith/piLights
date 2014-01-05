@@ -51,43 +51,38 @@ class index_js:
 class brightness:
 	def GET(self):
 		global gPiLights
-		level = float(web.input(level=-1.0).level)
-		if level >= 0.0:
-			gPiLights.brightness = level/100.0
-		print 'LEVEL=', level, int(gPiLights.brightness * 100)
+		#print 'LEVEL_GET=', int(gPiLights.brightness * 100)
 		return int(gPiLights.brightness * 100)
+
+	def POST(self):
+		global gPiLights
+		#print 'LEVEL_POST=', float(web.input(level=-1.0).level)/100.0
+		gPiLights.brightness = float(web.input(level=-1.0).level)/100.0
 
 class refresh:
 	def GET(self):
 		global gPiLights
-		rate = float(web.input(rate=-1.0).rate)
-		if rate >= 0.0:
-			gPiLights.refresh = rate
-		print 'RATE=', rate, gPiLights.refresh
+		#print 'RATE_GET=', gPiLights.refresh
 		return gPiLights.refresh
 
+	def POST(self):
+		global gPiLights
+		#print 'RATE_POST=', float(web.input().rate)
+		gPiLights.refresh = float(web.input().rate)
 
 # Generators @
 class generator:
 	def GET(self):
 		global gPiLights
-		num = int(web.input(num=-1).num)
-		if num >= 0:
-			gPiLights.setGenerator(num)
+		print 'GEN_GET=', gPiLights.generator
 		return gPiLights.generator
 
-# http://docs.python.org/2/library/stdtypes.html
+	def POST(self):
+		global gPiLights
+		print 'GEN_POST=', int(web.input().num)
+		gPiLights.setGenerator(int(web.input().num))
+
 # Channels @
-
-my_form = web.form.Form(
-	web.form.Checkbox('', id='on'),
-	web.form.Checkbox('', id='r'),
-	web.form.Checkbox('', id='g'),
-	web.form.Checkbox('', id='b'),
-	web.form.Textbox('', id='duration'),
-)
-
-
 class chan_blink:
 	def GET(self):
 		global gPiLights
@@ -100,12 +95,12 @@ class chan_blink:
 	def POST(self):
 		global gPiLights
 		#print 'POST1=', web.input(on=-1).on, web.input(r=-1).r,web.input(r=-1).g,web.input(r=-1).b, web.input(r=-1).a, web.input(duration=-1).duration
-		gPiLights.chan_Blink[0] = web.input(on=False).on
-		gPiLights.chan_Blink[2][0] = int(web.input(r=0).r)
-		gPiLights.chan_Blink[2][1] = int(web.input(g=0).g)
-		gPiLights.chan_Blink[2][2] = int(web.input(b=0).b)
-		gPiLights.chan_Blink[2][3] = int(web.input(a=0).a)
-		gPiLights.chan_Blink[3] = int(web.input(duration=0).duration)
+		gPiLights.chan_Blink[0] = web.input().on
+		gPiLights.chan_Blink[2][0] = int(web.input().r)
+		gPiLights.chan_Blink[2][1] = int(web.input().g)
+		gPiLights.chan_Blink[2][2] = int(web.input().b)
+		gPiLights.chan_Blink[2][3] = int(web.input().a)
+		gPiLights.chan_Blink[3] = int(web.input().duration)
 		print "POST2= %s,%i,%i,%i,%i,%i" % ((gPiLights.chan_Blink[0] == 'True'), int(gPiLights.chan_Blink[2][0]),int(gPiLights.chan_Blink[2][1]),int(gPiLights.chan_Blink[2][2]),int(gPiLights.chan_Blink[2][3]), int(gPiLights.chan_Blink[3]))
 
 class chan_sin:
