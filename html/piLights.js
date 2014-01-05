@@ -12,7 +12,7 @@ function httpGet(url) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", '/'+url, false);
     xmlHttp.send(null);
-	console.log(xmlHttp.responseText);
+	//console.log(xmlHttp.responseText);
     return xmlHttp.responseText;
 }
 
@@ -20,6 +20,10 @@ function moveDisplay(x) {
 	var d = document.getElementById("displays");
 	d.style.left = -x+'px';
 }
+
+/*Object.prototype.toType = function() {
+  return ({}).toString.call(this).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
+}*/
 
 /*function httpGet(url) {
 	var xhr = new XMLHttpRequest();

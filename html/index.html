@@ -12,15 +12,20 @@
 <body onload="init()">
 <div class="fullscreen">
 
-<!-- Top display -->
+<!-- Top box -->
 <div class="displays" id="displays">
-	<div id="displayMaster">
-		<!--<ui class="box" style="width: 150px; height: 200px;">
-		<ui class="slider"><ui class="sliderBar" onMouseDown="sliderHandleMouseDown(event,this)"></ui></ui>-->
+	<div id="displayMaster">Master Control<br>
 		
 		<!-- Brightness -->
-		<ui class="box" style="width: 100px; height: 200px;">
+		<ui class="box">
 		<span id="brightness"></span><br>
+		<script type="text/javascript">
+			document.getElementById('brightness').innerHTML = httpGet('brightness');
+			function SET_brightness(level) {
+				data = httpGet('brightness?level='+level);
+				document.getElementById('brightness').innerHTML = data;
+			}
+		</script>
 		<button id="brightness100" onclick="SET_brightness(100)">100%</button><br>
 		<button id="brightness80" onclick="SET_brightness(80)">80%</button><br>
 		<button id="brightness60" onclick="SET_brightness(60)">60%</button><br>
@@ -28,18 +33,18 @@
 		<button id="brightness40" onclick="SET_brightness(40)">40%</button><br>
 		<button id="brightness20" onclick="SET_brightness(20)">20%</button><br>
 		<button id="brightness0" onclick="SET_brightness(0)">0%</button>
-		<script type="text/javascript">
-			document.getElementById('brightness').innerHTML = httpGet('brightness');;
-			function SET_brightness(level) {
-				data = httpGet('brightness?level='+level);
-				document.getElementById('brightness').innerHTML = data;
-			}
-		</script>
 		</ui>
 		
 		<!-- Refresh -->
-		<ui class="box" style="width: 100px; height: 200px;">
+		<ui class="box">
 		<span id="refresh"></span><br>
+		<script type="text/javascript">
+			document.getElementById('refresh').innerHTML = httpGet('refresh');
+			function SET_refresh(rate) {
+				data = httpGet('refresh?rate='+rate);
+				document.getElementById('refresh').innerHTML = data;
+			}
+		</script>
 		<button id="refresh0.001" onclick="SET_refresh(0.001)">0.001</button><br>
 		<button id="refresh0.005" onclick="SET_refresh(0.005)">0.05</button><br>
 		<button id="refresh0.01" onclick="SET_refresh(0.01)">0.01</button><br>
@@ -48,36 +53,80 @@
 		<button id="refresh0.2" onclick="SET_refresh(0.2)">0.2</button><br>
 		<button id="refresh0.5" onclick="SET_refresh(0.5)">0.5</button><br>
 		<button id="refresh1.0" onclick="SET_refresh(1.0)">1.0</button>
-		<script type="text/javascript">
-			document.getElementById('refresh').innerHTML = httpGet('refresh');;
-			function SET_refresh(rate) {
-				data = httpGet('refresh?rate='+rate);
-				document.getElementById('refresh').innerHTML = data;
-			}
-		</script>
 		</ui>
 
 	</div>
-	<div id="displayGenerators">
+	<div id="displayGenerators">Generators<br>
 	
 		<!-- Generators -->
-		<ui class="box" style="width: 100px; height: 200px;">
+		<ui class="box">
 		<span id="generator"></span><br>
-		<button id="generator0" onclick="SET_generator(0)">Constant</button><br>
-		<button id="generator1" onclick="SET_generator(1)">Random</button><br>
-		<button id="generator2" onclick="SET_generator(2)">Rainbow</button><br>
-		<button id="generator3" onclick="SET_generator(3)">Disolve</button><br>
 		<script type="text/javascript">
-			document.getElementById('generator').innerHTML = httpGet('generator');;
+			document.getElementById('generator').innerHTML = httpGet('generator');
 			function SET_generator(num) {
 				data = httpGet('generator?num='+num);
 				document.getElementById('generator').innerHTML = data;
 			}
 		</script>
+		<button onclick="SET_generator(0)">Constant</button><br>
+		<button onclick="SET_generator(1)">Random</button><br>
+		<button onclick="SET_generator(2)">Rainbow</button><br>
+		<button onclick="SET_generator(3)">Disolve</button><br>
 		</ui>
 	
 	</div>
-	<div id="displayChannels">Channels
+	<div id="displayChannels">Channels<br>
+	
+	<!-- Channels_Blink -->
+		<ui class="box">
+		<label><input type="checkbox" id="chan_blink_on" onclick="update_chan_blink()">Blink</label>
+		<label><input type="checkbox" id="chan_blink_r" onclick="update_chan_blink()">r</label>
+		<label><input type="checkbox" id="chan_blink_g" onclick="update_chan_blink()">g</label>
+		<label><input type="checkbox" id="chan_blink_b" onclick="update_chan_blink()">b</label>
+		<label><input type="checkbox" id="chan_blink_a" onclick="update_chan_blink()">a</label>
+		<label><input type="text" id="chan_blink_duration" onChange="update_chan_blink()">duration</label><br>
+		<script type="text/javascript">
+			var chan_blink_arr = httpGet('chan_blink').split(',');
+			//console.log(chan_blink_arr);
+		
+			// on/off
+			document.getElementById('chan_blink_on').checked = (chan_blink_arr[0] == 'True' ? true : false);
+			//r,g,b,a
+			document.getElementById('chan_blink_r').checked = parseInt(chan_blink_arr[1]);
+			document.getElementById('chan_blink_g').checked = parseInt(chan_blink_arr[2]);
+			document.getElementById('chan_blink_b').checked = parseInt(chan_blink_arr[3]);
+			document.getElementById('chan_blink_a').checked = parseInt(chan_blink_arr[4]);
+			// vars
+			document.getElementById('chan_blink_duration').value = parseInt(chan_blink_arr[5]);
+			
+			/*function SET_channel(url) {
+				data = httpGet(url);
+				document.getElementById(chan).innerHTML = data;
+			}*/
+			function update_chan_blink() {
+				var str =	'chan_blink?on=' + (document.getElementById('chan_blink_on').checked ? "True":"False") +
+							'&r=' + (document.getElementById('chan_blink_r').checked ? "1":"0") +
+							'&g=' + (document.getElementById('chan_blink_g').checked ? "1":"0") +
+							'&b=' + (document.getElementById('chan_blink_b').checked ? "1":"0") +
+							'&a=' + (document.getElementById('chan_blink_a').checked ? "1":"0") +
+							'&duration=' + document.getElementById('chan_blink_duration').value;
+				console.log(str)
+				var ret = httpGet(str);
+			}
+		</script>
+		</ui>
+		
+		<!--
+		<label><input type="checkbox" id="chan_blink_on" value="value">on</label><button onclick="SET_channel_blink('chan_sin',1)">Sin</button>
+		<label><input type="checkbox" id="chan_blink_r" value="value">r</label><label><input type="checkbox" id="chan_blink_g" value="value">g</label><label><input type="checkbox" id="chan_blink_b" value="value">b</label><label><input type="checkbox" id="chan_blink_a" value="value">a</label><br>
+		<label><input type="checkbox" id="chan_blink_on" value="value">on</label><button onclick="SET_channel_blink('chan_random',2)">Random</button>
+		<label><input type="checkbox" id="chan_blink_r" value="value">r</label><label><input type="checkbox" id="chan_blink_g" value="value">g</label><label><input type="checkbox" id="chan_blink_b" value="value">b</label><label><input type="checkbox" id="chan_blink_a" value="value">a</label><br>
+		<label><input type="checkbox" id="chan_blink_on" value="value">on</label><button onclick="SET_channel_blink('chan_freeze',3)">Freeze</button>
+		<label><input type="checkbox" id="chan_blink_r" value="value">r</label><label><input type="checkbox" id="chan_blink_g" value="value">g</label><label><input type="checkbox" id="chan_blink_b" value="value">b</label><label><input type="checkbox" id="chan_blink_a" value="value">a</label><br>
+		<label><input type="checkbox" id="chan_blink_on" value="value">on</label><button onclick="SET_channel_blink('chan_fadeout',3)">Fadeout</button>
+		<label><input type="checkbox" id="chan_blink_r" value="value">r</label><label><input type="checkbox" id="chan_blink_g" value="value">g</label><label><input type="checkbox" id="chan_blink_b" value="value">b</label><label><input type="checkbox" id="chan_blink_a" value="value">a</label><br>
+		-->
+		
 	</div>
 	<div id="displayPrograms">Programs
 	</div>

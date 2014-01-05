@@ -22,9 +22,7 @@ class piLights:
 		## LED @@
 		self.brightness = 0.8
 		self.refresh = 0.05
-		self.led_count = 28 * 1
 		self.led_strip = led
-		
 		self.led_strip.brightness = self.brightness
 
 		## PALETTE @@
@@ -44,11 +42,11 @@ class piLights:
 		self.generator = 2
 
 		## CHANELS @@			On/Off	Channels			 r,g,b,a	vars
-		self.chan_Blink		= [ False,	Channel_Blink(),	[1,1,1,0],	10		]
-		self.chan_Sin		= [ False,	Channel_Sin(),		[1,1,1,0],	0.1		]
-		self.chan_Random	= [ False,	Channel_Random(),	[1,1,1,0]			]
-		self.chan_Freeze	= [ False,	Channel_Freeze(),	[1,1,1,0],	False	]
-		self.chan_Fadeout	= [ False,	Channel_Fadeout(),	[1,1,1,0],	20		]
+		self.chan_Blink		= [ False,	Channel_Blink(),	[1,1,1,0],	10				]
+		self.chan_Sin		= [ False,	Channel_Sin(),		[1,1,1,0],	0.1				]
+		self.chan_Random	= [ False,	Channel_Random(),	[1,1,1,0]					]
+		self.chan_Freeze	= [ False,	Channel_Freeze(),	[1,1,1,0],	False, 0,0,0	]
+		self.chan_Fadeout	= [ False,	Channel_Fadeout(),	[1,1,1,0],	20				]
 
 		## PROGRAMS @@			On/Off	Programs										vars
 		self.prog_All		= [ True,	Program_All(self.led_strip, self.color)				]
@@ -60,6 +58,8 @@ class piLights:
 		self.generator = num
 		if num == 0:
 			c = self.gen_Constant[0].step(color=self.color)
+		elif num == 1:
+			c = self.gen_Rainbow[0].step(color=self.color)
 
 	def run(self):
 		print 'Running...'

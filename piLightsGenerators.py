@@ -29,7 +29,9 @@ class Generator_Rainbow(_Generators):
 		super(self.__class__, self).__init__()
 		self.degree, l, s = colorsys.rgb_to_hls(color.r/255.0, color.g/255.0, color.b/255.0)
 		
-	def step(self, delta=0.01):
+	def step(self, color=0, delta=0.01):
+		if type(color) is types.InstanceType:
+			self.degree, l, s = colorsys.rgb_to_hls(color.r/255.0, color.g/255.0, color.b/255.0)
 		self.degree += delta
 		if self.degree >= 1.0: self.degree -= 1.0
 		if self.degree < 0.0: self.degree += 1.0

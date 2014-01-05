@@ -96,35 +96,15 @@ ul.controlsList li#controlPrograms {
 
 ui.box {
 	display: block;
-	border: 1px solid black; margin: 0; padding: 20px;
+	border: 1px solid black; margin: 4px; padding: 20px;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
 	background-color: white;
-	width: 100%;
-	height: 100%;
 	float: left;
 }
-
-ui.slider {
-	display: block;
-	position: relative;
-	border: 0; margin: 0; padding: 0;
-	-webkit-border-radius: 20px;
-	border-radius: 20px;
-	width: 40px;
-	height: 100%;
-	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#444), color-stop(100%,#EEE));
-}
-ui.sliderBar {
-	display: block;
-	position: relative;
-	left: 0px; top: 0px;
-	border: 1px solid black; margin: -1px; padding: 0px;
-	-webkit-border-radius: 20px;
-	border-radius: 20px;
-	width: 40px;
-	height: 40px;
-	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#EEE), color-stop(100%,#444));
+ui button {
+	margin: 4px; padding: 0;
+	width: 100px; height: 30px;
 }
 
 /* DEBUG */
