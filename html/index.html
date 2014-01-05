@@ -79,7 +79,7 @@
 
 	<!-- Channels_Blink -->
 		<ui class="box">
-		<form class="box" action="/chan_blink" id="channel_blink_form" method="POST">
+		<form class="box" method="POST">
 			<label><input type="checkbox" id="chan_blink_on" onclick="update_chan_blink()">Blink</label>
 			<label><input type="checkbox" id="chan_blink_r" onclick="update_chan_blink()">r</label>
 			<label><input type="checkbox" id="chan_blink_g" onclick="update_chan_blink()">g</label>
@@ -108,23 +108,154 @@
 							'&b=' + (document.getElementById('chan_blink_b').checked ? "1":"0") +
 							'&a=' + (document.getElementById('chan_blink_a').checked ? "1":"0") +
 							'&duration=' + document.getElementById('chan_blink_duration').value;
-				console.log(str)
+				//console.log(str)
 				var ret = httpPOST(str);
 			}
 		</script>
 		</ui>
 		
-		<!--
-		<label><input type="checkbox" id="chan_blink_on" value="value">on</label><button onclick="SET_channel_blink('chan_sin',1)">Sin</button>
-		<label><input type="checkbox" id="chan_blink_r" value="value">r</label><label><input type="checkbox" id="chan_blink_g" value="value">g</label><label><input type="checkbox" id="chan_blink_b" value="value">b</label><label><input type="checkbox" id="chan_blink_a" value="value">a</label><br>
-		<label><input type="checkbox" id="chan_blink_on" value="value">on</label><button onclick="SET_channel_blink('chan_random',2)">Random</button>
-		<label><input type="checkbox" id="chan_blink_r" value="value">r</label><label><input type="checkbox" id="chan_blink_g" value="value">g</label><label><input type="checkbox" id="chan_blink_b" value="value">b</label><label><input type="checkbox" id="chan_blink_a" value="value">a</label><br>
-		<label><input type="checkbox" id="chan_blink_on" value="value">on</label><button onclick="SET_channel_blink('chan_freeze',3)">Freeze</button>
-		<label><input type="checkbox" id="chan_blink_r" value="value">r</label><label><input type="checkbox" id="chan_blink_g" value="value">g</label><label><input type="checkbox" id="chan_blink_b" value="value">b</label><label><input type="checkbox" id="chan_blink_a" value="value">a</label><br>
-		<label><input type="checkbox" id="chan_blink_on" value="value">on</label><button onclick="SET_channel_blink('chan_fadeout',3)">Fadeout</button>
-		<label><input type="checkbox" id="chan_blink_r" value="value">r</label><label><input type="checkbox" id="chan_blink_g" value="value">g</label><label><input type="checkbox" id="chan_blink_b" value="value">b</label><label><input type="checkbox" id="chan_blink_a" value="value">a</label><br>
-		-->
 		
+	<!-- Channels_Sin -->
+		<ui class="box">
+		<form class="box" method="POST">
+			<label><input type="checkbox" id="chan_sin_on" onclick="update_chan_sin()">Sin</label>
+			<label><input type="checkbox" id="chan_sin_r" onclick="update_chan_sin()">r</label>
+			<label><input type="checkbox" id="chan_sin_g" onclick="update_chan_sin()">g</label>
+			<label><input type="checkbox" id="chan_sin_b" onclick="update_chan_sin()">b</label>
+			<label><input type="checkbox" id="chan_sin_a" onclick="update_chan_sin()">a</label>
+			<label><input type="text" id="chan_sin_duration" onChange="update_chan_sin()">delta</label>
+		</form>
+		<script type="text/javascript">
+			load_chan_sin();
+			function load_chan_sin() {
+				arr = httpGET('chan_sin').split(','); //console.log(arr);
+				// on/off
+				document.getElementById("chan_sin_on").checked = (arr[0] == 'True');
+				//r,g,b,a
+				document.getElementById("chan_sin_r").checked = parseInt(arr[1]);
+				document.getElementById("chan_sin_g").checked = parseInt(arr[2]);
+				document.getElementById("chan_sin_b").checked = parseInt(arr[3]);
+				document.getElementById("chan_sin_a").checked = parseInt(arr[4]);
+				// vars
+				document.getElementById("chan_sin_duration").value = parseFloat(arr[5]);
+			}
+			function update_chan_sin() {
+				var str =	'chan_sin?on=' + (document.getElementById('chan_sin_on').checked ? "True":"False") +
+							'&r=' + (document.getElementById('chan_sin_r').checked ? "1":"0") +
+							'&g=' + (document.getElementById('chan_sin_g').checked ? "1":"0") +
+							'&b=' + (document.getElementById('chan_sin_b').checked ? "1":"0") +
+							'&a=' + (document.getElementById('chan_sin_a').checked ? "1":"0") +
+							'&delta=' + document.getElementById('chan_sin_duration').value;
+				//console.log(str)
+				var ret = httpPOST(str);
+			}
+		</script>
+		</ui>
+
+
+	<!-- Channels_Random -->
+		<ui class="box">
+		<form class="box" method="POST">
+			<label><input type="checkbox" id="chan_random_on" onclick="update_chan_random()">Random</label>
+			<label><input type="checkbox" id="chan_random_r" onclick="update_chan_random()">r</label>
+			<label><input type="checkbox" id="chan_random_g" onclick="update_chan_random()">g</label>
+			<label><input type="checkbox" id="chan_random_b" onclick="update_chan_random()">b</label>
+			<label><input type="checkbox" id="chan_random_a" onclick="update_chan_random()">a</label>
+		</form>
+		<script type="text/javascript">
+			load_chan_random();
+			function load_chan_random() {
+				arr = httpGET('chan_random').split(','); //console.log(arr);
+				// on/off
+				document.getElementById("chan_random_on").checked = (arr[0] == 'True');
+				//r,g,b,a
+				document.getElementById("chan_random_r").checked = parseInt(arr[1]);
+				document.getElementById("chan_random_g").checked = parseInt(arr[2]);
+				document.getElementById("chan_random_b").checked = parseInt(arr[3]);
+				document.getElementById("chan_random_a").checked = parseInt(arr[4]);
+			}
+			function update_chan_random() {
+				var str =	'chan_random?on=' + (document.getElementById('chan_random_on').checked ? "True":"False") +
+							'&r=' + (document.getElementById('chan_random_r').checked ? "1":"0") +
+							'&g=' + (document.getElementById('chan_random_g').checked ? "1":"0") +
+							'&b=' + (document.getElementById('chan_random_b').checked ? "1":"0") +
+							'&a=' + (document.getElementById('chan_random_a').checked ? "1":"0");
+				//console.log(str)
+				var ret = httpPOST(str);
+			}
+		</script>
+		</ui>
+
+	<!-- Channels_Freeze -->
+		<ui class="box">
+		<form class="box" method="POST">
+			<label><input type="checkbox" id="chan_freeze_on" onclick="update_chan_freeze()">Freeze</label>
+			<label><input type="checkbox" id="chan_freeze_r" onclick="update_chan_freeze()">r</label>
+			<label><input type="checkbox" id="chan_freeze_g" onclick="update_chan_freeze()">g</label>
+			<label><input type="checkbox" id="chan_freeze_b" onclick="update_chan_freeze()">b</label>
+			<label><input type="checkbox" id="chan_freeze_a" onclick="update_chan_freeze()">a</label>
+		</form>
+		<script type="text/javascript">
+			load_chan_freeze();
+			function load_chan_freeze() {
+				arr = httpGET('chan_freeze').split(','); //console.log(arr);
+				// on/off
+				document.getElementById("chan_freeze_on").checked = (arr[0] == 'True');
+				//r,g,b,a
+				document.getElementById("chan_freeze_r").checked = parseInt(arr[1]);
+				document.getElementById("chan_freeze_g").checked = parseInt(arr[2]);
+				document.getElementById("chan_freeze_b").checked = parseInt(arr[3]);
+				document.getElementById("chan_freeze_a").checked = parseInt(arr[4]);
+			}
+			function update_chan_freeze() {
+				var str =	'chan_freeze?on=' + (document.getElementById('chan_freeze_on').checked ? "True":"False") +
+							'&r=' + (document.getElementById('chan_freeze_r').checked ? "1":"0") +
+							'&g=' + (document.getElementById('chan_freeze_g').checked ? "1":"0") +
+							'&b=' + (document.getElementById('chan_freeze_b').checked ? "1":"0") +
+							'&a=' + (document.getElementById('chan_freeze_a').checked ? "1":"0");
+				//console.log(str)
+				var ret = httpPOST(str);
+			}
+		</script>
+		</ui>
+
+	<!-- Channels_Fadeout -->
+		<ui class="box">
+		<form class="box" method="POST">
+			<label><input type="checkbox" id="chan_fadeout_on" onclick="update_chan_fadeout()">Fadeout</label>
+			<label><input type="checkbox" id="chan_fadeout_r" onclick="update_chan_fadeout()">r</label>
+			<label><input type="checkbox" id="chan_fadeout_g" onclick="update_chan_fadeout()">g</label>
+			<label><input type="checkbox" id="chan_fadeout_b" onclick="update_chan_fadeout()">b</label>
+			<label><input type="checkbox" id="chan_fadeout_a" onclick="update_chan_fadeout()">a</label>
+			<label><input type="text" id="chan_fadeout_duration" onChange="update_chan_fadeout()">duration</label>
+		</form>
+		<script type="text/javascript">
+			load_chan_fadeout();
+			function load_chan_fadeout() {
+				arr = httpGET('chan_fadeout').split(','); //console.log(arr);
+				// on/off
+				document.getElementById("chan_fadeout_on").checked = (arr[0] == 'True');
+				//r,g,b,a
+				document.getElementById("chan_fadeout_r").checked = parseInt(arr[1]);
+				document.getElementById("chan_fadeout_g").checked = parseInt(arr[2]);
+				document.getElementById("chan_fadeout_b").checked = parseInt(arr[3]);
+				document.getElementById("chan_fadeout_a").checked = parseInt(arr[4]);
+				// vars
+				document.getElementById("chan_fadeout_duration").value = parseInt(arr[5]);
+			}
+			function update_chan_fadeout() {
+				var str =	'chan_fadeout?on=' + (document.getElementById('chan_fadeout_on').checked ? "True":"False") +
+							'&r=' + (document.getElementById('chan_fadeout_r').checked ? "1":"0") +
+							'&g=' + (document.getElementById('chan_fadeout_g').checked ? "1":"0") +
+							'&b=' + (document.getElementById('chan_fadeout_b').checked ? "1":"0") +
+							'&a=' + (document.getElementById('chan_fadeout_a').checked ? "1":"0") +
+							'&duration=' + document.getElementById('chan_fadeout_duration').value;
+				//console.log(str)
+				var ret = httpPOST(str);
+			}
+		</script>
+		</ui>
+
 	</div>
 	<div id="displayPrograms">Programs
 	</div>

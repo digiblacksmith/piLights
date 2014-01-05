@@ -56,8 +56,8 @@ class brightness:
 
 	def POST(self):
 		global gPiLights
-		#print 'LEVEL_POST=', float(web.input(level=-1.0).level)/100.0
-		gPiLights.brightness = float(web.input(level=-1.0).level)/100.0
+		#print 'LEVEL_POST=', float(web.input(level=-1).level)/100.0
+		gPiLights.brightness = float(web.input().level)/100.0
 
 class refresh:
 	def GET(self):
@@ -67,62 +67,121 @@ class refresh:
 
 	def POST(self):
 		global gPiLights
-		#print 'RATE_POST=', float(web.input().rate)
+		#print 'RATE_POST=', float(web.input(rate=-1).rate)
 		gPiLights.refresh = float(web.input().rate)
 
 # Generators @
 class generator:
 	def GET(self):
 		global gPiLights
-		print 'GEN_GET=', gPiLights.generator
+		#print 'GEN_GET=', gPiLights.generator
 		return gPiLights.generator
 
 	def POST(self):
 		global gPiLights
-		print 'GEN_POST=', int(web.input().num)
+		#print 'GEN_POST=', int(web.input(num=-1).num)
 		gPiLights.setGenerator(int(web.input().num))
 
 # Channels @
 class chan_blink:
 	def GET(self):
 		global gPiLights
-		str = "%d,%d,%d,%d,%d,%d" %(	gPiLights.chan_Blink[0],
+		str = "%s,%d,%d,%d,%d,%d" %(	('True' if gPiLights.chan_Blink[0] else 'False'),
 										gPiLights.chan_Blink[2][0],gPiLights.chan_Blink[2][1],gPiLights.chan_Blink[2][2],gPiLights.chan_Blink[2][3],
 										gPiLights.chan_Blink[3]);
-		print 'GET='+str;
+		#print 'BLINK_GET=', str;
 		return str;
 
 	def POST(self):
 		global gPiLights
-		#print 'POST1=', web.input(on=-1).on, web.input(r=-1).r,web.input(r=-1).g,web.input(r=-1).b, web.input(r=-1).a, web.input(duration=-1).duration
-		gPiLights.chan_Blink[0] = web.input().on
+		#print 'BLINK_POST1=', web.input(on=-1).on, web.input(r=-1).r,web.input(r=-1).g,web.input(r=-1).b, web.input(r=-1).a, web.input(duration=-1).duration
+		gPiLights.chan_Blink[0] = (web.input().on == 'True')
 		gPiLights.chan_Blink[2][0] = int(web.input().r)
 		gPiLights.chan_Blink[2][1] = int(web.input().g)
 		gPiLights.chan_Blink[2][2] = int(web.input().b)
 		gPiLights.chan_Blink[2][3] = int(web.input().a)
 		gPiLights.chan_Blink[3] = int(web.input().duration)
-		print "POST2= %s,%i,%i,%i,%i,%i" % ((gPiLights.chan_Blink[0] == 'True'), int(gPiLights.chan_Blink[2][0]),int(gPiLights.chan_Blink[2][1]),int(gPiLights.chan_Blink[2][2]),int(gPiLights.chan_Blink[2][3]), int(gPiLights.chan_Blink[3]))
+		#print "BLINK_POST2= %s,%i,%i,%i,%i,%i" % (gPiLights.chan_Blink[0], gPiLights.chan_Blink[2][0],gPiLights.chan_Blink[2][1],gPiLights.chan_Blink[2][2],gPiLights.chan_Blink[2][3], gPiLights.chan_Blink[3])
 
 class chan_sin:
 	def GET(self):
 		global gPiLights
-		return [ gPiLights.chan_Sin[0], gPiLights.chan_Sin[2], gPiLights.chan_Sin[3] ]
+		str = "%s,%d,%d,%d,%d,%f" %(	('True' if gPiLights.chan_Sin[0] else 'False'),
+										gPiLights.chan_Sin[2][0],gPiLights.chan_Sin[2][1],gPiLights.chan_Sin[2][2],gPiLights.chan_Sin[2][3],
+										gPiLights.chan_Sin[3]);
+		#print 'SIN_GET=', str;
+		return str;
+
+	def POST(self):
+		global gPiLights
+		#print 'SIN_POST1=', web.input(on=-1).on, web.input(r=-1).r,web.input(r=-1).g,web.input(r=-1).b, web.input(r=-1).a, web.input(duration=-1).delta
+		gPiLights.chan_Sin[0] = (web.input().on == 'True')
+		gPiLights.chan_Sin[2][0] = int(web.input().r)
+		gPiLights.chan_Sin[2][1] = int(web.input().g)
+		gPiLights.chan_Sin[2][2] = int(web.input().b)
+		gPiLights.chan_Sin[2][3] = int(web.input().a)
+		gPiLights.chan_Sin[3] = float(web.input().delta)
+		#print "SIN_POST2= %s,%i,%i,%i,%i,%f" % (gPiLights.chan_Sin[0], gPiLights.chan_Sin[2][0],gPiLights.chan_Sin[2][1],gPiLights.chan_Sin[2][2],gPiLights.chan_Sin[2][3], gPiLights.chan_Sin[3])
 
 class chan_random:
 	def GET(self):
 		global gPiLights
-		return [ gPiLights.chan_Random[0], gPiLights.chan_Random[2] ]
+		str = "%s,%d,%d,%d,%d" %(	('True' if gPiLights.chan_Sin[0] else 'False'),
+									gPiLights.chan_Sin[2][0],gPiLights.chan_Sin[2][1],gPiLights.chan_Sin[2][2],gPiLights.chan_Sin[2][3],
+								);
+		#print 'RADNOM_GET=', str;
+		return str;
+
+	def POST(self):
+		global gPiLights
+		#print 'RANDOM_POST1=', web.input(on=-1).on, web.input(r=-1).r,web.input(r=-1).g,web.input(r=-1).b, web.input(r=-1).a
+		gPiLights.chan_Random[0] = (web.input().on == 'True')
+		gPiLights.chan_Random[2][0] = int(web.input().r)
+		gPiLights.chan_Random[2][1] = int(web.input().g)
+		gPiLights.chan_Random[2][2] = int(web.input().b)
+		gPiLights.chan_Random[2][3] = int(web.input().a)
+		#print "RANDOM_POST2= %s,%i,%i,%i,%i" % (gPiLights.chan_Random[0], gPiLights.chan_Random[2][0],gPiLights.chan_Random[2][1],gPiLights.chan_Random[2][2],gPiLights.chan_Random[2][3])
 
 class chan_freeze:
 	def GET(self):
 		global gPiLights
-		return [ gPiLights.chan_Freeze[0], gPiLights.chan_Freeze[2], gPiLights.chan_Freeze[3], gPiLights.chan_Freeze[4], gPiLights.chan_Freeze[5], gPiLights.chan_Freeze[6] ]
+		str = "%s,%d,%d,%d,%d" %(	('True' if gPiLights.chan_Freeze[0] else 'False'),
+									gPiLights.chan_Freeze[2][0],gPiLights.chan_Freeze[2][1],gPiLights.chan_Freeze[2][2],gPiLights.chan_Freeze[2][3],
+								);
+		#print 'FREEZE_GET=', str;
+		return str;
+
+	def POST(self):
+		global gPiLights
+		#print 'FREEZE_POST1=', web.input(on=-1).on, web.input(r=-1).r,web.input(r=-1).g,web.input(r=-1).b, web.input(r=-1).a
+		gPiLights.chan_Freeze[0] = (web.input().on == 'True')
+		gPiLights.chan_Freeze[2][0] = int(web.input().r)
+		gPiLights.chan_Freeze[2][1] = int(web.input().g)
+		gPiLights.chan_Freeze[2][2] = int(web.input().b)
+		gPiLights.chan_Freeze[2][3] = int(web.input().a)
+		#print "FREEZE_POST2= %s,%i,%i,%i,%i" % (gPiLights.chan_Freeze[0], gPiLights.chan_Freeze[2][0],gPiLights.chan_Freeze[2][1],gPiLights.chan_Freeze[2][2],gPiLights.chan_Freeze[2][3])
+		gPiLights.chan_Freeze[1].color = gPiLights.color
 
 class chan_fadeout:
 	def GET(self):
 		global gPiLights
-		return [ gPiLights.chan_Fadeout[0], gPiLights.chan_Fadeout[2], gPiLights.chan_Fadeout[3] ]
+		str = "%s,%d,%d,%d,%d,%d" %(	('True' if gPiLights.chan_Fadeout[0] else 'False'),
+										gPiLights.chan_Fadeout[2][0],gPiLights.chan_Fadeout[2][1],gPiLights.chan_Fadeout[2][2],gPiLights.chan_Fadeout[2][3],
+										gPiLights.chan_Fadeout[3]);
+		#print 'FADE_GET=', str;
+		return str;
 
+	def POST(self):
+		global gPiLights
+		#print 'FADE_POST1=', web.input(on=-1).on, web.input(r=-1).r,web.input(r=-1).g,web.input(r=-1).b, web.input(r=-1).a, web.input(duration=-1).duration
+		gPiLights.chan_Fadeout[0] = (web.input().on == 'True')
+		gPiLights.chan_Fadeout[2][0] = int(web.input().r)
+		gPiLights.chan_Fadeout[2][1] = int(web.input().g)
+		gPiLights.chan_Fadeout[2][2] = int(web.input().b)
+		gPiLights.chan_Fadeout[2][3] = int(web.input().a)
+		gPiLights.chan_Fadeout[3] = int(web.input().duration)
+		#print "FADE_POST2= %s,%i,%i,%i,%i,%i" % (gPiLights.chan_Fadeout[0], gPiLights.chan_Fadeout[2][0],gPiLights.chan_Fadeout[2][1],gPiLights.chan_Fadeout[2][2],gPiLights.chan_Fadeout[2][3], gPiLights.chan_Fadeout[3])
+		gPiLights.chan_Fadeout[1].duration = gPiLights.chan_Fadeout[3]
 
 # Programs @
 

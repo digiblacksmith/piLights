@@ -50,24 +50,26 @@ class Channel_Random(_Channels):
 
 class Channel_Freeze(_Channels):
 	def __init__(self):
-		self.frozen = Colors.black
-	def tick(self, color, channels, newColor=0):
-		if newColor: self.frozen = newColor
+		self.color = Colors.black
+	def update(self, color):
+		self.color = color
+	def tick(self, color, channels):
 		r = color.r; g = color.g; b = color.b; a = color.a
-		if channels[0]: r = self.frozen.r
-		if channels[1]: g = self.frozen.g
-		if channels[2]: b = self.frozen.b
-		if channels[3]: a = self.frozen.a
+		if channels[0]: r = self.color.r
+		if channels[1]: g = self.color.g
+		if channels[2]: b = self.color.b
+		if channels[3]: a = self.color.a
 		return Color(r,g,b,a)
 
 class Channel_Fadeout(_Channels):
 	def __init__(self):
 		self.count = 0
-	def tick(self, color, channels, duration=20):
+		self.duration = 0
+	def tick(self, color, channels):
 		self.count -= 1
-		if self.count <=0 or self.count > duration:
-			self.count = duration
-		fadeOut = self.count/float(duration)
+		if self.count <=0 or self.count > self.duration:
+			self.count = self.duration
+		fadeOut = self.count/float(self.duration)
 		r = color.r; g = color.g; b = color.b; a = color.a
 		if channels[0]: r = r * fadeOut
 		if channels[1]: g = g * fadeOut

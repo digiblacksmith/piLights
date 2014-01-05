@@ -42,11 +42,11 @@ class piLights:
 		self.generator = 2
 
 		## CHANELS @@			On/Off	Channels			 r,g,b,a	vars
-		self.chan_Blink		= [ False,	Channel_Blink(),	[1,1,1,0],	10				]
-		self.chan_Sin		= [ False,	Channel_Sin(),		[1,1,1,0],	0.1				]
-		self.chan_Random	= [ False,	Channel_Random(),	[1,1,1,0]					]
-		self.chan_Freeze	= [ False,	Channel_Freeze(),	[1,1,1,0],	False, 0,0,0	]
-		self.chan_Fadeout	= [ False,	Channel_Fadeout(),	[1,1,1,0],	20				]
+		self.chan_Blink		= [ False,	Channel_Blink(),	[1,1,1,0],	10		]
+		self.chan_Sin		= [ False,	Channel_Sin(),		[1,1,1,0],	0.1		]
+		self.chan_Random	= [ False,	Channel_Random(),	[1,1,1,0]			]
+		self.chan_Freeze	= [ False,	Channel_Freeze(),	[1,1,1,0]			]
+		self.chan_Fadeout	= [ False,	Channel_Fadeout(),	[1,1,1,0],	20		]
 
 		## PROGRAMS @@			On/Off	Programs										vars
 		self.prog_All		= [ True,	Program_All(self.led_strip, self.color)				]
@@ -81,8 +81,8 @@ class piLights:
 			if self.chan_Blink[0]:	self.color = self.chan_Blink[1].tick	(self.color, self.chan_Blink[2], duration=self.chan_Blink[3])
 			if self.chan_Sin[0]:	self.color = self.chan_Sin[1].tick		(self.color, self.chan_Sin[2], delta=self.chan_Sin[3])
 			if self.chan_Random[0]:	self.color = self.chan_Random[1].tick	(self.color, self.chan_Random[2])
-			if self.chan_Freeze[0]:	self.color = self.chan_Freeze[1].tick	(self.color, self.chan_Freeze[2], newColor=0)
-			if self.chan_Fadeout[0]:self.color = self.chan_Fadeout[1].tick	(self.color, self.chan_Fadeout[2], duration=20)
+			if self.chan_Freeze[0]:	self.color = self.chan_Freeze[1].tick	(self.color, self.chan_Freeze[2])
+			if self.chan_Fadeout[0]:self.color = self.chan_Fadeout[1].tick	(self.color, self.chan_Fadeout[2])
 
 			## Prorams @@
 			if self.prog_All[0] == True:		self.prog_All[1].run(self.color)
