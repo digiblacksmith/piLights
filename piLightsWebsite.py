@@ -81,21 +81,28 @@ class generator:
 class chan_blink:
 	def GET(self):
 		global gPiLights
-		if not web.input(on='-1').on == '-1':
-			# on/off
-			gPiLights.chan_Blink[0] = (web.input().on == 'True')
-			# r,g,b,a
-			gPiLights.chan_Blink[2][0] = int(web.input().r)
-			gPiLights.chan_Blink[2][1] = int(web.input().g)
-			gPiLights.chan_Blink[2][2] = int(web.input().b)
-			gPiLights.chan_Blink[2][3] = int(web.input().a)
-			# vars
-			gPiLights.chan_Blink[3] = int(web.input().duration)
+		#if not web.input(on='-1').on == '-1':
+		#	# on/off
+		#	gPiLights.chan_Blink[0] = (web.input().on == 'True')
+		#	# r,g,b,a
+		#	gPiLights.chan_Blink[2][0] = int(web.input().r)
+		#	gPiLights.chan_Blink[2][1] = int(web.input().g)
+		#	gPiLights.chan_Blink[2][2] = int(web.input().b)
+		#	gPiLights.chan_Blink[2][3] = int(web.input().a)
+		#	# vars
+		#	gPiLights.chan_Blink[3] = int(web.input().duration)
 		str = "%r,%d,%d,%d,%d,%d" %(	gPiLights.chan_Blink[0],
 										gPiLights.chan_Blink[2][0],gPiLights.chan_Blink[2][1],gPiLights.chan_Blink[2][2],gPiLights.chan_Blink[2][3],
 										gPiLights.chan_Blink[3]);
-		#print str;
+		print 'GET='+str;
 		return str;
+
+#	def POST(self):
+#		global gPiLights
+#		form = web.input(on=0, r=0,g=0,b=0,a=0, duration=0)
+#		str = "%s,%s,%s,%s,%s,%s" % (form.on, form.r,form.g,form.b,form.a, form.duration)
+#		print 'POST='+str
+#		return str
 
 class chan_sin:
 	def GET(self):

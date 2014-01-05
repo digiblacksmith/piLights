@@ -8,12 +8,22 @@ function init() {
 	//gDebug.innerHTML += 'gBrightness = ' + gBrightness + '<br>';
 }
 
-function httpGet(url) {
+function httpGET(url) {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", '/'+url, false);
     xmlHttp.send(null);
 	//console.log(xmlHttp.responseText);
     return xmlHttp.responseText;
+}
+
+function httpPOST(url, data) {
+	//console.log(url, data)
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("POST", '/'+url, true);
+    xmlHttp.onload = function () {
+    	console.log(this.responseText);
+	};
+	xmlHttp.send(data);
 }
 
 function moveDisplay(x) {
