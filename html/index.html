@@ -76,51 +76,40 @@
 	
 	</div>
 	<div id="displayChannels">Channels<br>
-	
+
 	<!-- Channels_Blink -->
 		<ui class="box">
-		<form class="box" action="/chan_blink" name="chan_blink_form" id="channel_form" method="POST">
-		<label><input type="checkbox" name="on" onclick="chan_blink_form.submit()">Blink</label>
-		<label><input type="checkbox" name="r" onclick="update_chan_blink()">r</label>
-		<label><input type="checkbox" name="g" onclick="update_chan_blink()">g</label>
-		<label><input type="checkbox" name="b" onclick="update_chan_blink()">b</label>
-		<label><input type="checkbox" name="a" onclick="update_chan_blink()">a</label>
-		<label><input type="text" name="duration" onChange="update_chan_blink()">duration</label>
+		<form class="box" action="/chan_blink" id="channel_blink_form" method="POST">
+			<label><input type="checkbox" id="chan_blink_on" onclick="update_chan_blink()">Blink</label>
+			<label><input type="checkbox" id="chan_blink_r" onclick="update_chan_blink()">r</label>
+			<label><input type="checkbox" id="chan_blink_g" onclick="update_chan_blink()">g</label>
+			<label><input type="checkbox" id="chan_blink_b" onclick="update_chan_blink()">b</label>
+			<label><input type="checkbox" id="chan_blink_a" onclick="update_chan_blink()">a</label>
+			<label><input type="text" id="chan_blink_duration" onChange="update_chan_blink()">duration</label>
 		</form>
-<script>
-/*$( "#channel_form" ).submit(function(e) {
-	e.preventDefault();
-	posting.done(function(data) {
-		console.log(data)
-	});
-}*/
-</script>
 		<script type="text/javascript">
 			load_chan_blink();
 			function load_chan_blink() {
 				arr = httpGET('chan_blink').split(','); console.log(arr);
 				// on/off
-				document.getElementsByName("on")[0].checked = (arr[0] == 'True');
+				document.getElementById("chan_blink_on").checked = (arr[0] == 'True');
 				//r,g,b,a
-				document.getElementsByName("r")[0].checked = parseInt(arr[1]);
-				document.getElementsByName("g")[0].checked = parseInt(arr[2]);
-				document.getElementsByName("b")[0].checked = parseInt(arr[3]);
-				document.getElementsByName("a")[0].checked = parseInt(arr[4]);
+				document.getElementById("chan_blink_r").checked = parseInt(arr[1]);
+				document.getElementById("chan_blink_g").checked = parseInt(arr[2]);
+				document.getElementById("chan_blink_b").checked = parseInt(arr[3]);
+				document.getElementById("chan_blink_a").checked = parseInt(arr[4]);
 				// vars
-				document.getElementsByName("duration")[0].value = parseInt(arr[5]);
+				document.getElementById("chan_blink_duration").value = parseInt(arr[5]);
 			}
 			function update_chan_blink() {
-				/*var str =	'chan_blink?on=' + (document.getElementById('chan_blink_on').checked ? "True":"False") +
+				var str =	'chan_blink?on=' + (document.getElementById('chan_blink_on').checked ? "True":"False") +
 							'&r=' + (document.getElementById('chan_blink_r').checked ? "1":"0") +
 							'&g=' + (document.getElementById('chan_blink_g').checked ? "1":"0") +
 							'&b=' + (document.getElementById('chan_blink_b').checked ? "1":"0") +
 							'&a=' + (document.getElementById('chan_blink_a').checked ? "1":"0") +
 							'&duration=' + document.getElementById('chan_blink_duration').value;
 				console.log(str)
-				var ret = httpGet(str);*/
-				
-				form = document.getElementsByName("chan_blink_form")
-				httpPOST('chan_blink', form);
+				var ret = httpPOST(str);
 			}
 		</script>
 		</ui>

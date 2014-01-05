@@ -76,33 +76,37 @@ class generator:
 			gPiLights.setGenerator(num)
 		return gPiLights.generator
 
-
+# http://docs.python.org/2/library/stdtypes.html
 # Channels @
+
+my_form = web.form.Form(
+	web.form.Checkbox('', id='on'),
+	web.form.Checkbox('', id='r'),
+	web.form.Checkbox('', id='g'),
+	web.form.Checkbox('', id='b'),
+	web.form.Textbox('', id='duration'),
+)
+
+
 class chan_blink:
 	def GET(self):
 		global gPiLights
-		#if not web.input(on='-1').on == '-1':
-		#	# on/off
-		#	gPiLights.chan_Blink[0] = (web.input().on == 'True')
-		#	# r,g,b,a
-		#	gPiLights.chan_Blink[2][0] = int(web.input().r)
-		#	gPiLights.chan_Blink[2][1] = int(web.input().g)
-		#	gPiLights.chan_Blink[2][2] = int(web.input().b)
-		#	gPiLights.chan_Blink[2][3] = int(web.input().a)
-		#	# vars
-		#	gPiLights.chan_Blink[3] = int(web.input().duration)
-		str = "%r,%d,%d,%d,%d,%d" %(	gPiLights.chan_Blink[0],
+		str = "%d,%d,%d,%d,%d,%d" %(	gPiLights.chan_Blink[0],
 										gPiLights.chan_Blink[2][0],gPiLights.chan_Blink[2][1],gPiLights.chan_Blink[2][2],gPiLights.chan_Blink[2][3],
 										gPiLights.chan_Blink[3]);
 		print 'GET='+str;
 		return str;
 
-#	def POST(self):
-#		global gPiLights
-#		form = web.input(on=0, r=0,g=0,b=0,a=0, duration=0)
-#		str = "%s,%s,%s,%s,%s,%s" % (form.on, form.r,form.g,form.b,form.a, form.duration)
-#		print 'POST='+str
-#		return str
+	def POST(self):
+		global gPiLights
+		#print 'POST1=', web.input(on=-1).on, web.input(r=-1).r,web.input(r=-1).g,web.input(r=-1).b, web.input(r=-1).a, web.input(duration=-1).duration
+		gPiLights.chan_Blink[0] = web.input(on=False).on
+		gPiLights.chan_Blink[2][0] = int(web.input(r=0).r)
+		gPiLights.chan_Blink[2][1] = int(web.input(g=0).g)
+		gPiLights.chan_Blink[2][2] = int(web.input(b=0).b)
+		gPiLights.chan_Blink[2][3] = int(web.input(a=0).a)
+		gPiLights.chan_Blink[3] = int(web.input(duration=0).duration)
+		print "POST2= %s,%i,%i,%i,%i,%i" % ((gPiLights.chan_Blink[0] == 'True'), int(gPiLights.chan_Blink[2][0]),int(gPiLights.chan_Blink[2][1]),int(gPiLights.chan_Blink[2][2]),int(gPiLights.chan_Blink[2][3]), int(gPiLights.chan_Blink[3]))
 
 class chan_sin:
 	def GET(self):
@@ -134,10 +138,13 @@ class _http_Server(threading.Thread):
 	
 	def run(self):
 		global gURLs
-		web.internalerror = web.debugerror
+		if gConsole:
+			web.internalerror = web.debugerror
+		else:
+			web.config.debug = False
+			#sys.stdout = open('/dev/null', 'w')
+		
 		app = web.application(gURLs, globals())
-		if not gConsole:
-			sys.stdout = open('/dev/null', 'w')
 		try:
 			app.run()
 		except:

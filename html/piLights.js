@@ -30,26 +30,3 @@ function moveDisplay(x) {
 	var d = document.getElementById("displays");
 	d.style.left = -x+'px';
 }
-
-/*Object.prototype.toType = function() {
-  return ({}).toString.call(this).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
-}*/
-
-/*function httpGet(url) {
-	var xhr = new XMLHttpRequest();
-	xhr.open("GET", '/'+url, true);
-	xhr.onload = function (e) {
-		if (xhr.readyState === 4) {
-			if (xhr.status === 200) {
-				console.log(xhr.responseText);
-				return xhr.responseText
-			} else {
-				console.error(xhr.statusText);
-			}
-		}
-	};
-	xhr.onerror = function (e) {
-		console.error(xhr.statusText);
-	};
-	xhr.send(null);
-}*/
