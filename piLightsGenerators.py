@@ -27,6 +27,9 @@ class Generator_Random(_Generators):
 class Generator_Rainbow(_Generators):
 	def __init__(self, color):
 		super(self.__class__, self).__init__()
+		self.update(color)
+		
+	def update(self, color):
 		self.degree, l, s = colorsys.rgb_to_hls(color.r/255.0, color.g/255.0, color.b/255.0)
 		
 	def step(self, color=0, delta=0.01):

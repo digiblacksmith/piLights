@@ -17,7 +17,7 @@
 	<div id="displayMaster">Master Control<br>
 		
 		<!-- Brightness -->
-		<ui class="box">
+		<ui class="box" style="float: left">
 		<span id="brightness"></span><br>
 		<script type="text/javascript">
 			document.getElementById('brightness').innerHTML = httpGET('brightness');
@@ -36,7 +36,7 @@
 		</ui>
 		
 		<!-- Refresh -->
-		<ui class="box">
+		<ui class="box" style="float: left">
 		<span id="refresh"></span><br>
 		<script type="text/javascript">
 			document.getElementById('refresh').innerHTML = httpGET('refresh');
@@ -59,21 +59,42 @@
 	<div id="displayGenerators">Generators<br>
 	
 		<!-- Generators -->
-		<ui class="box">
-		<span id="generator"></span><br>
+		<ui class="box" style="width: 40%">
+		<input type="radio" name="generators" id="gen_Constant" onclick="SET_generator(0)">Constant</input>
+		</ui>
+		<ui class="box" style="width: 40%">
+		<input type="radio" name="generators" id="gen_Random" onclick="SET_generator(1)">Random</input><br>
+		</ui>
+		<ui class="box" style="width: 40%">
+		<input type="radio" name="generators" id="gen_Rainbow" onclick="SET_generator(2)">Rainbow</input><br>
+		</ui>
+		<ui class="box" style="width: 40%">
+		<input type="radio" name="generators" id="gen_Disolve" onclick="SET_generator(3)">Disolve</input><br>
 		<script type="text/javascript">
-			document.getElementById('generator').innerHTML = httpGET('generator');
+			load_generators();
+			function load_generators() {
+				var generator = parseInt(httpGET('generator'));
+				switch(generator) {
+					case 0:
+						document.getElementById("gen_Constant").checked = true;
+						break;
+					case 1:
+						document.getElementById("gen_Random").checked = true;
+						break;
+					case 2:
+						document.getElementById("gen_Rainbow").checked = true;
+						break;
+					case 3:
+						document.getElementById("gen_Disolve").checked = true;
+						break;
+				}
+			}
 			function SET_generator(num) {
 				var ret = httpPOST('generator?num='+num);
-				document.getElementById('generator').innerHTML = num; //httpGET('generator');
+				// console.log(httpGET('generator'));
 			}
 		</script>
-		<button onclick="SET_generator(0)">Constant</button><br>
-		<button onclick="SET_generator(1)">Random</button><br>
-		<button onclick="SET_generator(2)">Rainbow</button><br>
-		<button onclick="SET_generator(3)">Disolve</button><br>
 		</ui>
-	
 	</div>
 	<div id="displayChannels">Channels<br>
 
@@ -90,7 +111,7 @@
 		<script type="text/javascript">
 			load_chan_blink();
 			function load_chan_blink() {
-				arr = httpGET('chan_blink').split(','); //console.log(arr);
+				var arr = httpGET('chan_blink').split(','); //console.log(arr);
 				// on/off
 				document.getElementById("chan_blink_on").checked = (arr[0] == 'True');
 				//r,g,b,a
@@ -128,7 +149,7 @@
 		<script type="text/javascript">
 			load_chan_sin();
 			function load_chan_sin() {
-				arr = httpGET('chan_sin').split(','); //console.log(arr);
+				var arr = httpGET('chan_sin').split(','); //console.log(arr);
 				// on/off
 				document.getElementById("chan_sin_on").checked = (arr[0] == 'True');
 				//r,g,b,a
@@ -165,7 +186,7 @@
 		<script type="text/javascript">
 			load_chan_random();
 			function load_chan_random() {
-				arr = httpGET('chan_random').split(','); //console.log(arr);
+				var arr = httpGET('chan_random').split(','); //console.log(arr);
 				// on/off
 				document.getElementById("chan_random_on").checked = (arr[0] == 'True');
 				//r,g,b,a
@@ -198,7 +219,7 @@
 		<script type="text/javascript">
 			load_chan_freeze();
 			function load_chan_freeze() {
-				arr = httpGET('chan_freeze').split(','); //console.log(arr);
+				var arr = httpGET('chan_freeze').split(','); //console.log(arr);
 				// on/off
 				document.getElementById("chan_freeze_on").checked = (arr[0] == 'True');
 				//r,g,b,a
@@ -232,7 +253,7 @@
 		<script type="text/javascript">
 			load_chan_fadeout();
 			function load_chan_fadeout() {
-				arr = httpGET('chan_fadeout').split(','); //console.log(arr);
+				var arr = httpGET('chan_fadeout').split(','); //console.log(arr);
 				// on/off
 				document.getElementById("chan_fadeout_on").checked = (arr[0] == 'True');
 				//r,g,b,a
@@ -257,7 +278,52 @@
 		</ui>
 
 	</div>
-	<div id="displayPrograms">Programs
+	<div id="displayPrograms">Programs<br>
+	
+	<!-- Program_all -->
+		<ui class="box">
+		<form class="box" method="POST">
+			<label><input type="checkbox" id="prog_all_on" onclick="update_prog_all()">All</label>
+		</form>
+		<script type="text/javascript">
+			load_prog_all();
+			function load_prog_all() {
+				var arr = httpGET('prog_all').split(','); //console.log(arr);
+				// on/off
+				document.getElementById("prog_all_on").checked = (arr[0] == 'True');
+			}
+			function update_prog_all() {
+				var str =	'prog_all?on=' + (document.getElementById('prog_all_on').checked ? "True":"False");
+				console.log(str)
+				var ret = httpPOST(str);
+			}
+		</script>
+		</ui>
+	<br>
+	<!-- Program_ShiftLR -->
+		<ui class="box">
+		<form class="box" method="POST">
+			<label><input type="checkbox" id="prog_shiftlr_on" onclick="update_prog_shiftlr()">ShiftLR</label>
+			<label><input type="text" id="prog_shiftlr_length" onChange="update_prog_shiftlr()">length</label>
+		</form>
+		<script type="text/javascript">
+			load_prog_shiftlr();
+			function load_prog_shiftlr() {
+				var arr = httpGET('prog_shiftLR').split(','); //console.log(arr);
+				// on/off
+				document.getElementById("prog_shiftlr_on").checked = (arr[0] == 'True');
+				// vars
+				document.getElementById("prog_shiftlr_length").value = parseInt(arr[1]);
+			}
+			function update_prog_shiftlr() {
+				var str =	'prog_shiftLR?on=' + (document.getElementById('prog_shiftlr_on').checked ? "True":"False") +
+							'&length=' + document.getElementById('prog_shiftlr_length').value;
+				console.log(str)
+				var ret = httpPOST(str);
+			}
+		</script>
+		</ui>
+	
 	</div>
 </div>
 
@@ -270,6 +336,6 @@
 </ul>
 
 </div>
-<div class="debug" id="debug"/>
+<!--<div class="debug" id="debug"/>-->
 </body>
 </html>

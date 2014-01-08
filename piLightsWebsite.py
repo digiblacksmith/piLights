@@ -29,6 +29,8 @@ gURLs = (
 	'/chan_fadeout',	'chan_fadeout',
 	
 	# Programs @
+	'/prog_all',		'prog_all',
+	'/prog_shiftLR',	'prog_shiftLR',
 	
 )
 
@@ -126,8 +128,8 @@ class chan_sin:
 class chan_random:
 	def GET(self):
 		global gPiLights
-		str = "%s,%d,%d,%d,%d" %(	('True' if gPiLights.chan_Sin[0] else 'False'),
-									gPiLights.chan_Sin[2][0],gPiLights.chan_Sin[2][1],gPiLights.chan_Sin[2][2],gPiLights.chan_Sin[2][3],
+		str = "%s,%d,%d,%d,%d" %(	('True' if gPiLights.chan_Random[0] else 'False'),
+									gPiLights.chan_Random[2][0],gPiLights.chan_Random[2][1],gPiLights.chan_Random[2][2],gPiLights.chan_Random[2][3],
 								);
 		#print 'RADNOM_GET=', str;
 		return str;
@@ -141,6 +143,7 @@ class chan_random:
 		gPiLights.chan_Random[2][2] = int(web.input().b)
 		gPiLights.chan_Random[2][3] = int(web.input().a)
 		#print "RANDOM_POST2= %s,%i,%i,%i,%i" % (gPiLights.chan_Random[0], gPiLights.chan_Random[2][0],gPiLights.chan_Random[2][1],gPiLights.chan_Random[2][2],gPiLights.chan_Random[2][3])
+		####gPiLights.chan_Random[1].update(gPiLights.color)
 
 class chan_freeze:
 	def GET(self):
@@ -184,7 +187,33 @@ class chan_fadeout:
 		gPiLights.chan_Fadeout[1].duration = gPiLights.chan_Fadeout[3]
 
 # Programs @
+class prog_all:
+	def GET(self):
+		global piLights
+		str = "%s" %(	('True' if gPiLights.prog_All[0] else 'False'));
+		#print 'ALL_GET=', str;
+		return str;
 
+	def POST(self):
+		global gPiLights
+		#print 'ALL_POST1=', web.input(on=-1).on
+		gPiLights.prog_All[0] = (web.input().on == 'True')
+		#print "LR_POST2= %s" % (gPiLights.prog_All[0])
+
+class prog_shiftLR:
+	def GET(self):
+		global piLights
+		str = "%s,%d" %(	('True' if gPiLights.prog_ShiftLR[0] else 'False'),
+										gPiLights.prog_ShiftLR[2]);
+		#print 'SHIFTLR_GET=', str;
+		return str;
+
+	def POST(self):
+		global gPiLights
+		#print 'LR_POST1=', web.input(on=-1).on, web.input(r=-1).length
+		gPiLights.prog_ShiftLR[0] = (web.input().on == 'True')
+		gPiLights.prog_ShiftLR[2] = int(web.input().length)
+		#print "LR_POST2= %s,%i" % (gPiLights.prog_ShiftLR[0],gPiLights.prog_ShiftLR[2])
 
 
 ## WEBSITE MAIN @@

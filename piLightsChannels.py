@@ -41,11 +41,10 @@ class Channel_Sin(_Channels):
 class Channel_Random(_Channels):
 	def tick(self, color, channels):
 		r = color.r; g = color.g; b = color.b; a = color.a
-		rand = random.random()
-		if channels[0]: r *= rand
-		if channels[1]: g *= rand
-		if channels[2]: b *= rand
-		if channels[3]: a *= rand
+		if channels[0]: r = random.randint(0,255)
+		if channels[1]: g = random.randint(0,255)
+		if channels[2]: b = random.randint(0,255)
+		if channels[3]: a = random.randint(0,100)/100.0
 		return Color(r,g,b,a)
 
 class Channel_Freeze(_Channels):

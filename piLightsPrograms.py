@@ -18,19 +18,19 @@ class Program_All(_Programs):
 
 ## TODO: fade out
 class Program_ShiftLR(_Programs):
-	def __init__(self, led_strip, color):
-		super(self.__class__, self).__init__(led_strip, color)
-		self.countdown = 0
+#	def __init__(self, led_strip, color):
+#		super(self.__class__, self).__init__(led_strip, color)
+#		self.countdown = 0
 		
-	def run(self, color, vars=0):
-		limit = vars[0]
+	def run(self, color, var=0):
+		limit = var
 		if limit > 0:
-			self_led_strip.shiftRight(color)
-			self.countdown -= 1
+			self.led_strip.shiftRight(color)
+#			self.countdown -= 1
 		elif limit < 0:
-			self_led_strip.shiftLeft(color)
-			self.countdown += 1
-		else:
-			self.countdown  = limit
+			self.led_strip.shiftLeft(color)
+#			self.countdown += 1
+#		else:
+#			self.countdown  = limit
 
 ## EOF

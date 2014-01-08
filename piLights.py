@@ -49,8 +49,8 @@ class piLights:
 		self.chan_Fadeout	= [ False,	Channel_Fadeout(),	[1,1,1,0],	20		]
 
 		## PROGRAMS @@			On/Off	Programs										vars
-		self.prog_All		= [ True,	Program_All(self.led_strip, self.color)				]
 		self.prog_ShiftLR	= [ False,	Program_ShiftLR(self.led_strip, self.color),	1	]
+		self.prog_All		= [ True,	Program_All(self.led_strip, self.color)				]
 
 		print "Loaded!"
 
@@ -68,14 +68,10 @@ class piLights:
 			self.led_strip.brightness = self.brightness
 			
 			## Generat new color @@
-			if self.generator == 0:
-				self.color = self.gen_Constant[0].step()
-			if self.generator == 1:
-				self.color = self.gen_Random[0].step() #(color=)
-			if self.generator == 2:
-				self.color = self.gen_Rainbow[0].step(delta=self.gen_Rainbow[1])
-			if self.generator == 3:
-				self.color = self.gen_Disolve[0].step(self.palette, period=self.gen_Disolve[1])
+			if self.generator == 0:	self.color = self.gen_Constant[0].step()
+			if self.generator == 1:	self.color = self.gen_Random[0].step() #(color=)
+			if self.generator == 2:	self.color = self.gen_Rainbow[0].step(delta=self.gen_Rainbow[1])
+			if self.generator == 3:	self.color = self.gen_Disolve[0].step(self.palette, period=self.gen_Disolve[1])
 
 			## Channels @@
 			if self.chan_Blink[0]:	self.color = self.chan_Blink[1].tick	(self.color, self.chan_Blink[2], duration=self.chan_Blink[3])
@@ -85,10 +81,10 @@ class piLights:
 			if self.chan_Fadeout[0]:self.color = self.chan_Fadeout[1].tick	(self.color, self.chan_Fadeout[2])
 
 			## Prorams @@
-			if self.prog_All[0] == True:		self.prog_All[1].run(self.color)
 			if self.prog_ShiftLR[0] == True:	self.prog_ShiftLR[1].run(self.color, self.prog_ShiftLR[2])
 			#if self.prog_DotDance[0] == True:	self.prog_DotDance.run(self.color)
-
+			if self.prog_All[0] == True:		self.prog_All[1].run(self.color)
+			
 			## Update @@
 			self.led_strip.update(ret=False)
 			time.sleep(self.refresh)

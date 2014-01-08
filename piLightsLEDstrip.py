@@ -1,6 +1,5 @@
 # (c) 2014 Aaron Land - Digital Blacksmith
 
-#from LPD8806 import LPD8806
 from piLightsColor import *
 import copy
 
@@ -21,7 +20,7 @@ class LEDstrip:
 			self.buffer[pixel] = bytearray(3)
 				
 		if not console:
-			import LPD8806
+			from LPD8806 import LPD8806
 			self.driver = LPD8806(total, use_spidev, dev)
 			#( https://sites.google.com/site/mechatronicsguy/lightscythe-v2 )
 		
