@@ -1,38 +1,55 @@
-# (c) 2013 Aaron Land - Digital Blacksmith
+# (c) 2014 Aaron Land - Digital Blacksmith
 
-#( https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Synchronous_and_Asynchronous_Requests )
+#! sudo easy_install web.py
+#! sudo apt-get install python-webpy
+#! sudo pip install web.py
 
 from piLightsColor import *
 import web, threading, time
 
-gPiLights = None
-gConsole = False
-gHTTP = None
-gURLs = (
-	# index @
-	'/',				'index',
-	'/piLights.css',	'index_css',
-	'/piLights.js',		'index_js',
+## THREAD MAIN @@
+class _http_Server(threading.Thread):
+	def __init__(self, console=False):
+		super(self.__class__, self).__init__()
+		self.console = console
 
-	# Master @
-	'/brightness',		'brightness',
-	'/refresh',			'refresh',
+	def run(self):
+		urls = (
+			# index @
+			'/',				'index',
+			'/piLights.css',	'index_css',
+			'/piLights.js',		'index_js',
+
+			# Master @
+			'/brightness',		'brightness',
+			'/refresh',			'refresh',
 	
-	# Generators @
-	'/generator',		'generator',
+			# Generators @
+			'/generator',		'generator',
 	
-	# Channels @
-	'/chan_blink',		'chan_blink',
-	'/chan_sin',		'chan_sin',
-	'/chan_random',		'chan_random',
-	'/chan_freeze',		'chan_freeze',
-	'/chan_fadeout',	'chan_fadeout',
+			# Channels @
+			'/chan_blink',		'chan_blink',
+			'/chan_sin',		'chan_sin',
+			'/chan_random',		'chan_random',
+			'/chan_freeze',		'chan_freeze',
+			'/chan_fadeout',	'chan_fadeout',
 	
-	# Programs @
-	'/prog_all',		'prog_all',
-	'/prog_shiftLR',	'prog_shiftLR',
+			# Programs @
+			'/prog_all',		'prog_all',
+			'/prog_shiftLR',	'prog_shiftLR',
 	
-)
+		)
+		if self.console:
+			web.internalerror = web.debugerror
+		else:
+			web.config.debug = False
+			#sys.stdout = open('/dev/null', 'w')
+		
+		app = web.application(urls, globals())
+		try:
+			app.run()
+		except:
+			print 'Done'
 
 ## WEBSITE INDEX @@
 
@@ -216,34 +233,18 @@ class prog_shiftLR:
 		#print "LR_POST2= %s,%i" % (gPiLights.prog_ShiftLR[0],gPiLights.prog_ShiftLR[2])
 
 
-## WEBSITE MAIN @@
-class _http_Server(threading.Thread):
-	
-	def run(self):
-		global gURLs
-		if gConsole:
-			web.internalerror = web.debugerror
-		else:
-			web.config.debug = False
-			#sys.stdout = open('/dev/null', 'w')
-		
-		app = web.application(gURLs, globals())
-		try:
-			app.run()
-		except:
-			print 'Done'
-
 ## WEBSITE START @@
 
+gPiLights = None
+gHTTP = None
 def Start_Webserver(pL, console=False):
-	global gPiLights, gConsole, gHTTP
+	global gPiLights, gHTTP
 	print 'Starting webserver...',
 	gPiLights = pL
-	gConsole = console
-	gHTTP = _http_Server()
+	gHTTP = _http_Server(console)
 	gHTTP.daemon = True
 	gHTTP.start()
-	time.sleep(1/4.0)
+	time.sleep(1/2.0)
 
 def Stop_Webserver():
 	global gHTTP

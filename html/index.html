@@ -70,6 +70,10 @@
 		</ui>
 		<ui class="box" style="width: 40%">
 		<input type="radio" name="generators" id="gen_Disolve" onclick="SET_generator(3)">Disolve</input><br>
+		</ui>
+		<ui class="box" style="width: 40%">
+		<input type="radio" name="generators" id="gen_Webcam" onclick="SET_generator(4)">Webcam</input><br>
+		</ui>
 		<script type="text/javascript">
 			load_generators();
 			function load_generators() {
@@ -87,6 +91,9 @@
 					case 3:
 						document.getElementById("gen_Disolve").checked = true;
 						break;
+					case 4:
+						document.getElementById("gen_Webcam").checked = true;
+						break;
 				}
 			}
 			function SET_generator(num) {
@@ -94,7 +101,6 @@
 				// console.log(httpGET('generator'));
 			}
 		</script>
-		</ui>
 	</div>
 	<div id="displayChannels">Channels<br>
 

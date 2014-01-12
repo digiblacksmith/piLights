@@ -5,6 +5,8 @@
 
 ## COLOR @@
 
+import math
+
 class Color:
 	def __init__(self, r=0,g=0,b=0,a=1.0):
 		self.rgba(r,g,b,a)
@@ -13,6 +15,7 @@ class Color:
 	def __copy__(self):
 		return Color(self.r,self.g,self.b,self.a)
 	
+	# r=0-255, g=0-255, b=0-255, a=0.0-1.0
 	def rgba(self, r,g,b,a=1.0):
 		if r < 0: r = 0
 		if r > 255: r = 255
@@ -26,6 +29,26 @@ class Color:
 		if a < 0.0: a = 0.0
 		if a > 1.0: a = 1.0
 		self.a = a
+	
+	#( http://www.cs.rit.edu/~ncs/color/t_convert.html )
+	# h=0-360 s=0.0-1.0 v=0.0-1.0 a=0.0-1.0
+	def hsva(self, h,s,v,a=1.0):
+		if s == 0:
+			self.rgba(v,v,v,a)
+		h /= 60
+		i = math.floor(h)
+		f = h - i
+		p = v * (1 - s)
+		q = v * (1 - s * f)
+		t = v * (1 - s * (1 - f))
+		
+		if i == 0:	self.rgba(v*255,t*255,p*255,a)
+		elif i == 1:	self.rgba(q*255,v*255,p*255,a)
+		elif i == 2:	self.rgba(p*255,v*255,t*255,a)
+		elif i == 3:	self.rgba(p*255,q*255,v*255,a)
+		elif i == 4:	self.rgba(t*255,p*255,v*255,a)
+		elif i == 5:	self.rgba(v*255,p*255,q*255,a)
+		else:		print 'ERROR i=', i; quit()
 	
 	def add(self, r=0.0,g=0.0,b=0.0,a=0.0):
 		self.rgba(self.r+r, self.g+g, self.b+b, self.a+a)
