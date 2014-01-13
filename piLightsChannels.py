@@ -76,5 +76,9 @@ class Channel_Fadeout(_Channels):
 		if channels[3]: a = a * fadeOut
 		return Color(r,g,b,a)
 
+#( http://asliceofraspberrypi.blogspot.com/2013/02/adding-audio-input-device.html )
+# class Channel_AudioLevels(_Channels):
+
+
 
 ## EOF
