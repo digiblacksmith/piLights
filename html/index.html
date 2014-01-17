@@ -26,12 +26,12 @@
 				document.getElementById('brightness').innerHTML = level; //httpGET('brightness');
 			}
 		</script>
-		<button id="brightness100" onclick="SET_brightness(100)">100%</button><br>
-		<button id="brightness80" onclick="SET_brightness(80)">80%</button><br>
-		<button id="brightness60" onclick="SET_brightness(60)">60%</button><br>
-		<button id="brightness60" onclick="SET_brightness(50)">50%</button><br>
-		<button id="brightness40" onclick="SET_brightness(40)">40%</button><br>
-		<button id="brightness20" onclick="SET_brightness(20)">20%</button><br>
+		<button id="brightness100" onclick="SET_brightness(1.0)">100%</button><br>
+		<button id="brightness80" onclick="SET_brightness(0.8)">80%</button><br>
+		<button id="brightness60" onclick="SET_brightness(0.6)">60%</button><br>
+		<button id="brightness60" onclick="SET_brightness(0.5)">50%</button><br>
+		<button id="brightness40" onclick="SET_brightness(0.4)">40%</button><br>
+		<button id="brightness20" onclick="SET_brightness(0.2)">20%</button><br>
 		<button id="brightness0" onclick="SET_brightness(0)">0%</button>
 		</ui>
 		
@@ -77,7 +77,7 @@
 		<script type="text/javascript">
 			load_generators();
 			function load_generators() {
-				var generator = parseInt(httpGET('generator'));
+				var generator = parseInt(httpGET('in_generator'));
 				switch(generator) {
 					case 0:
 						document.getElementById("gen_Constant").checked = true;
@@ -97,7 +97,7 @@
 				}
 			}
 			function SET_generator(num) {
-				var ret = httpPOST('generator?num='+num);
+				var ret = httpPOST('in_generator?num='+num);
 				// console.log(httpGET('generator'));
 			}
 		</script>
@@ -117,7 +117,7 @@
 		<script type="text/javascript">
 			load_chan_blink();
 			function load_chan_blink() {
-				var arr = httpGET('chan_blink').split(','); //console.log(arr);
+				var arr = httpGET('in_chan_blink').split(','); //console.log(arr);
 				// on/off
 				document.getElementById("chan_blink_on").checked = (arr[0] == 'True');
 				//r,g,b,a
@@ -129,7 +129,7 @@
 				document.getElementById("chan_blink_duration").value = parseInt(arr[5]);
 			}
 			function update_chan_blink() {
-				var str =	'chan_blink?on=' + (document.getElementById('chan_blink_on').checked ? "True":"False") +
+				var str =	'in_chan_blink?on=' + (document.getElementById('chan_blink_on').checked ? "True":"False") +
 							'&r=' + (document.getElementById('chan_blink_r').checked ? "1":"0") +
 							'&g=' + (document.getElementById('chan_blink_g').checked ? "1":"0") +
 							'&b=' + (document.getElementById('chan_blink_b').checked ? "1":"0") +
@@ -155,7 +155,7 @@
 		<script type="text/javascript">
 			load_chan_sin();
 			function load_chan_sin() {
-				var arr = httpGET('chan_sin').split(','); //console.log(arr);
+				var arr = httpGET('in_chan_sin').split(','); //console.log(arr);
 				// on/off
 				document.getElementById("chan_sin_on").checked = (arr[0] == 'True');
 				//r,g,b,a
@@ -167,7 +167,7 @@
 				document.getElementById("chan_sin_duration").value = parseFloat(arr[5]);
 			}
 			function update_chan_sin() {
-				var str =	'chan_sin?on=' + (document.getElementById('chan_sin_on').checked ? "True":"False") +
+				var str =	'in_chan_sin?on=' + (document.getElementById('chan_sin_on').checked ? "True":"False") +
 							'&r=' + (document.getElementById('chan_sin_r').checked ? "1":"0") +
 							'&g=' + (document.getElementById('chan_sin_g').checked ? "1":"0") +
 							'&b=' + (document.getElementById('chan_sin_b').checked ? "1":"0") +
@@ -192,7 +192,7 @@
 		<script type="text/javascript">
 			load_chan_random();
 			function load_chan_random() {
-				var arr = httpGET('chan_random').split(','); //console.log(arr);
+				var arr = httpGET('in_chan_random').split(','); //console.log(arr);
 				// on/off
 				document.getElementById("chan_random_on").checked = (arr[0] == 'True');
 				//r,g,b,a
@@ -202,7 +202,7 @@
 				document.getElementById("chan_random_a").checked = parseInt(arr[4]);
 			}
 			function update_chan_random() {
-				var str =	'chan_random?on=' + (document.getElementById('chan_random_on').checked ? "True":"False") +
+				var str =	'in_chan_random?on=' + (document.getElementById('chan_random_on').checked ? "True":"False") +
 							'&r=' + (document.getElementById('chan_random_r').checked ? "1":"0") +
 							'&g=' + (document.getElementById('chan_random_g').checked ? "1":"0") +
 							'&b=' + (document.getElementById('chan_random_b').checked ? "1":"0") +
@@ -225,7 +225,7 @@
 		<script type="text/javascript">
 			load_chan_freeze();
 			function load_chan_freeze() {
-				var arr = httpGET('chan_freeze').split(','); //console.log(arr);
+				var arr = httpGET('in_chan_freeze').split(','); //console.log(arr);
 				// on/off
 				document.getElementById("chan_freeze_on").checked = (arr[0] == 'True');
 				//r,g,b,a
@@ -235,7 +235,7 @@
 				document.getElementById("chan_freeze_a").checked = parseInt(arr[4]);
 			}
 			function update_chan_freeze() {
-				var str =	'chan_freeze?on=' + (document.getElementById('chan_freeze_on').checked ? "True":"False") +
+				var str =	'in_chan_freeze?on=' + (document.getElementById('chan_freeze_on').checked ? "True":"False") +
 							'&r=' + (document.getElementById('chan_freeze_r').checked ? "1":"0") +
 							'&g=' + (document.getElementById('chan_freeze_g').checked ? "1":"0") +
 							'&b=' + (document.getElementById('chan_freeze_b').checked ? "1":"0") +
@@ -259,7 +259,7 @@
 		<script type="text/javascript">
 			load_chan_fadeout();
 			function load_chan_fadeout() {
-				var arr = httpGET('chan_fadeout').split(','); //console.log(arr);
+				var arr = httpGET('in_chan_fadeout').split(','); //console.log(arr);
 				// on/off
 				document.getElementById("chan_fadeout_on").checked = (arr[0] == 'True');
 				//r,g,b,a
@@ -271,7 +271,7 @@
 				document.getElementById("chan_fadeout_duration").value = parseInt(arr[5]);
 			}
 			function update_chan_fadeout() {
-				var str =	'chan_fadeout?on=' + (document.getElementById('chan_fadeout_on').checked ? "True":"False") +
+				var str =	'in_chan_fadeout?on=' + (document.getElementById('chan_fadeout_on').checked ? "True":"False") +
 							'&r=' + (document.getElementById('chan_fadeout_r').checked ? "1":"0") +
 							'&g=' + (document.getElementById('chan_fadeout_g').checked ? "1":"0") +
 							'&b=' + (document.getElementById('chan_fadeout_b').checked ? "1":"0") +
@@ -284,46 +284,46 @@
 		</ui>
 
 	</div>
-	<div id="displayPrograms">Programs<br>
+	<div id="displayPatterns">Patterns<br>
 	
-	<!-- Program_all -->
+	<!-- Pattern_all -->
 		<ui class="box">
 		<form class="box" method="POST">
-			<label><input type="checkbox" id="prog_all_on" onclick="update_prog_all()">All</label>
+			<label><input type="checkbox" id="patt_all_on" onclick="update_patt_all()">All</label>
 		</form>
 		<script type="text/javascript">
-			load_prog_all();
-			function load_prog_all() {
-				var arr = httpGET('prog_all').split(','); //console.log(arr);
+			load_patt_all();
+			function load_patt_all() {
+				var arr = httpGET('in_patt_all').split(','); //console.log(arr);
 				// on/off
-				document.getElementById("prog_all_on").checked = (arr[0] == 'True');
+				document.getElementById("patt_all_on").checked = (arr[0] == 'True');
 			}
-			function update_prog_all() {
-				var str =	'prog_all?on=' + (document.getElementById('prog_all_on').checked ? "True":"False");
+			function update_patt_all() {
+				var str =	'in_patt_all?on=' + (document.getElementById('patt_all_on').checked ? "True":"False");
 				console.log(str)
 				var ret = httpPOST(str);
 			}
 		</script>
 		</ui>
 	<br>
-	<!-- Program_ShiftLR -->
+	<!-- Pattern_Bitshift -->
 		<ui class="box">
 		<form class="box" method="POST">
-			<label><input type="checkbox" id="prog_shiftlr_on" onclick="update_prog_shiftlr()">ShiftLR</label>
-			<label><input type="text" id="prog_shiftlr_length" onChange="update_prog_shiftlr()">length</label>
+			<label><input type="checkbox" id="patt_shiftlr_on" onclick="update_patt_bitshift()">Bitshift</label>
+			<label><input type="text" id="patt_shiftlr_direction" onChange="update_patt_bitshift()">length</label>
 		</form>
 		<script type="text/javascript">
-			load_prog_shiftlr();
-			function load_prog_shiftlr() {
-				var arr = httpGET('prog_shiftLR').split(','); //console.log(arr);
+			load_patt_bitshift();
+			function load_patt_bitshift() {
+				var arr = httpGET('in_patt_bitshift').split(','); //console.log(arr);
 				// on/off
-				document.getElementById("prog_shiftlr_on").checked = (arr[0] == 'True');
+				document.getElementById("patt_shiftlr_on").checked = (arr[0] == 'True');
 				// vars
-				document.getElementById("prog_shiftlr_length").value = parseInt(arr[1]);
+				document.getElementById("patt_shiftlr_direction").value = parseInt(arr[1]);
 			}
-			function update_prog_shiftlr() {
-				var str =	'prog_shiftLR?on=' + (document.getElementById('prog_shiftlr_on').checked ? "True":"False") +
-							'&length=' + document.getElementById('prog_shiftlr_length').value;
+			function update_patt_bitshift() {
+				var str =	'in_patt_bitshift?on=' + (document.getElementById('patt_shiftlr_on').checked ? "True":"False") +
+							'&direction=' + document.getElementById('patt_shiftlr_direction').value;
 				console.log(str)
 				var ret = httpPOST(str);
 			}
@@ -338,7 +338,7 @@
 	<li id="controlMaster"	 	onClick="moveDisplay(0*512)">master</li>
 	<li id="controlGenerators"	onClick="moveDisplay(1*512)">generators</li>
 	<li id="controlChannels" 	onClick="moveDisplay(2*512)">channels</li>
-	<li id="controlPrograms"    onClick="moveDisplay(3*512)">programs</li>
+	<li id="controlPatterns"    onClick="moveDisplay(3*512)">patterns</li>
 </ul>
 
 </div>

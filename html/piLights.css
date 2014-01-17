@@ -42,7 +42,7 @@ div.displays div#displayGenerators {
 div.displays div#displayChannels {
 	background-color: green;
 }
-div.displays div#displayPrograms {
+div.displays div#displayPatterns {
 	background-color: blue;
 }
 
@@ -87,7 +87,7 @@ ul.controlsList li#controlChannels {
 	background-color: green;
 	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#040), color-stop(100%,#0D0));
 }
-ul.controlsList li#controlPrograms {
+ul.controlsList li#controlPatterns {
 	background-color: blue;
 	background: -webkit-gradient(linear, left top, right top, color-stop(0%,#006), color-stop(100%,#00F));
 }
